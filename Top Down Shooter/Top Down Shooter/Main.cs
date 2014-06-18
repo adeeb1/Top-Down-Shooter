@@ -14,7 +14,8 @@ namespace Top_Down_Shooter
         //Time the game is active
         public static float activeTime;
 
-        private Character player;
+        private Character1 player;
+        private Enemy1 enemy;
 
         public Main()
         {
@@ -38,7 +39,8 @@ namespace Top_Down_Shooter
             // TODO: Add your initialization logic here
             base.Initialize();
 
-            player = new Character();
+            player = new Character1();
+            enemy = new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80));
         }
 
         /// <summary>
@@ -73,6 +75,7 @@ namespace Top_Down_Shooter
             activeTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             player.Update();
+            enemy.Update();
 
             base.Update(gameTime);
         }
@@ -88,6 +91,7 @@ namespace Top_Down_Shooter
             spriteBatch.Begin(SpriteSortMode.FrontToBack, null, SamplerState.PointClamp, null, null, null);
 
             player.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
 
             spriteBatch.End();
 

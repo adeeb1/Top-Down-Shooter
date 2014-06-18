@@ -130,7 +130,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\Character1.cs" />
     <Compile Include="Enemies\Enemy.cs" />
+    <Compile Include="Enemies\Enemy1.cs" />
+    <Compile Include="Hitbox.cs" />
+    <Compile Include="Hurtbox.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="LevelObject.cs" />
     <Compile Include="LoadAssets.cs" />
@@ -151,6 +155,7 @@
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Content\Graphics\enemytest.png" />
     <Content Include="Content\Graphics\test.png" />
   </ItemGroup>
   <ItemGroup />

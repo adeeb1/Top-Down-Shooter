@@ -13,6 +13,7 @@ namespace Top_Down_Shooter
     public static class LoadAssets
     {
         public static Texture2D TestTexture;
+        public static Texture2D EnemyTestTexture;
 
         //Static variables here
         static LoadAssets()
@@ -31,7 +32,8 @@ namespace Top_Down_Shooter
         //Load all graphics
         public static void LoadGraphics(ContentManager Content)
         {
-            TestTexture = Content.Load<Texture2D>("Graphics/test");
+            TestTexture = Content.Load<Texture2D>("Graphics\\test");
+            EnemyTestTexture = Content.Load<Texture2D>("Graphics\\enemytest");
         }
 
         //Load all music
