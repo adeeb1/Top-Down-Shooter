@@ -11,11 +11,8 @@ using Microsoft.Xna.Framework.Input;
 namespace Top_Down_Shooter
 {
     //Base character class
-    public class Character : LevelObject
+    public abstract class Character : LevelObject
     {
-        // Controls how fast the player moves
-        public Vector2 MoveSpeed;
-
         // Represents the player texture (will later be changed to animation)
         public Texture2D PlayerTexture;
 
@@ -69,10 +66,7 @@ namespace Top_Down_Shooter
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(PlayerTexture, new Rectangle((int)ObjectPos.X, (int)ObjectPos.Y, PlayerTexture.Width, PlayerTexture.Height),
-                             Color.White);
+            spriteBatch.Draw(PlayerTexture, ObjectPos, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, SetDrawDepth());
         }
-
-
     }
 }
