@@ -9,19 +9,19 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Top_Down_Shooter
 {
     //Base Enemy class
-    public abstract class Enemy
+    public abstract class Enemy : LevelObject
     {
         public Enemy()
         {
 
         }
 
-        public virtual void Update()
+        public override void Update()
         {
 
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
 
         }

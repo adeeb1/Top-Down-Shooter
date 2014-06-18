@@ -5,16 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using MonoGame.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Top_Down_Shooter
 {
     //Load all assets here
     public static class LoadAssets
     {
+        public static Texture2D TestTexture;
+
         //Static variables here
         static LoadAssets()
         {
-
+            
         }
 
         //Load all content
@@ -28,7 +31,7 @@ namespace Top_Down_Shooter
         //Load all graphics
         public static void LoadGraphics(ContentManager Content)
         {
-
+            TestTexture = Content.Load<Texture2D>("Graphics/test");
         }
 
         //Load all music
