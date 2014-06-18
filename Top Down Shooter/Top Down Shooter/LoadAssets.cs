@@ -13,6 +13,8 @@ namespace Top_Down_Shooter
     public static class LoadAssets
     {
         public static Texture2D TestTexture;
+        public static Texture2D CursorTexture;
+        public static SpriteFont MenuFont;
 
         //Static variables here
         static LoadAssets()
@@ -32,6 +34,8 @@ namespace Top_Down_Shooter
         public static void LoadGraphics(ContentManager Content)
         {
             TestTexture = Content.Load<Texture2D>("Graphics/test");
+            CursorTexture = Content.Load<Texture2D>("Graphics/cursor");
+            MenuFont = Content.Load<SpriteFont>("Graphics/MenuFont");
         }
 
         //Load all music

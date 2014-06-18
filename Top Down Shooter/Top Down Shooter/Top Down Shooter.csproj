@@ -136,6 +136,7 @@
     <Compile Include="LoadAssets.cs" />
     <Compile Include="Menus\MenuScreen.cs" />
     <Compile Include="Characters\Character.cs" />
+    <Compile Include="Menus\TitleScreen.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,6 +145,9 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Content\Graphics\MenuFont.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Top Down Shooter_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +155,7 @@
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Content\Graphics\cursor.png" />
     <Content Include="Content\Graphics\test.png" />
   </ItemGroup>
   <ItemGroup />

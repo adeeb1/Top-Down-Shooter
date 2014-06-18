@@ -33,7 +33,7 @@ namespace Top_Down_Shooter
             PlayerTexture = LoadAssets.TestTexture;
         }
 
-        // Method for moving the palyer
+        // Method for moving the player
         protected virtual void PlayerMove()
         {
             // Check if the user can move left

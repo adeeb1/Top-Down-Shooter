@@ -15,6 +15,7 @@ namespace Top_Down_Shooter
         public static float activeTime;
 
         private Character player;
+        private TitleScreen titlescreen;
 
         public Main()
         {
@@ -39,6 +40,7 @@ namespace Top_Down_Shooter
             base.Initialize();
 
             player = new Character();
+            titlescreen = new TitleScreen();
         }
 
         /// <summary>
@@ -73,6 +75,7 @@ namespace Top_Down_Shooter
             activeTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             player.Update();
+            titlescreen.Update();
 
             base.Update(gameTime);
         }
@@ -87,7 +90,8 @@ namespace Top_Down_Shooter
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, null, SamplerState.PointClamp, null, null, null);
 
-            player.Draw(spriteBatch);
+            titlescreen.Draw(spriteBatch);
+            //player.Draw(spriteBatch);
 
             spriteBatch.End();
 
