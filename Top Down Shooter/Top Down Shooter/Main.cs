@@ -14,6 +14,10 @@ namespace Top_Down_Shooter
         //Time the game is active
         public static float activeTime;
 
+        private Character1 player;
+        private Enemy1 enemy;
+        private TitleScreen titlescreen;
+
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -34,8 +38,11 @@ namespace Top_Down_Shooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
+
+            player = new Character1();
+            enemy = new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80));
+            titlescreen = new TitleScreen();
         }
 
         /// <summary>
@@ -47,7 +54,7 @@ namespace Top_Down_Shooter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            
+            LoadAssets.LoadContent(Content);
         }
 
         /// <summary>
@@ -69,6 +76,10 @@ namespace Top_Down_Shooter
             //Update active time
             activeTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
+            player.Update();
+            enemy.Update();
+            titlescreen.Update();
+
             base.Update(gameTime);
         }
 
@@ -80,7 +91,13 @@ namespace Top_Down_Shooter
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, null, SamplerState.PointClamp, null, null, null);
+
+            titlescreen.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
+            player.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

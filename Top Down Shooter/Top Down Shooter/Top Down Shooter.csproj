@@ -130,10 +130,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\Character1.cs" />
     <Compile Include="Enemies\Enemy.cs" />
+    <Compile Include="Enemies\Enemy1.cs" />
+    <Compile Include="Hitbox.cs" />
+    <Compile Include="Hurtbox.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="LevelObject.cs" />
     <Compile Include="LoadAssets.cs" />
     <Compile Include="Menus\MenuScreen.cs" />
     <Compile Include="Characters\Character.cs" />
+    <Compile Include="Menus\TitleScreen.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -142,6 +149,9 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Content\Graphics\MenuFont.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Top Down Shooter_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -149,10 +159,11 @@
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Content\Graphics\cursor.png" />
+    <Content Include="Content\Graphics\enemytest.png" />
+    <Content Include="Content\Graphics\test.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
