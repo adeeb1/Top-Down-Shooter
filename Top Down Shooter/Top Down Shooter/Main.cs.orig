@@ -14,9 +14,13 @@ namespace Top_Down_Shooter
         //Time the game is active
         public static float activeTime;
 
+<<<<<<< HEAD
+        private Character player;
+        private TitleScreen titlescreen;
+=======
         private Character1 player;
         private Enemy1 enemy;
-        private TitleScreen titlescreen;
+>>>>>>> SetupEnemies
 
         public Main()
         {
@@ -40,9 +44,13 @@ namespace Top_Down_Shooter
             // TODO: Add your initialization logic here
             base.Initialize();
 
+<<<<<<< HEAD
+            player = new Character();
+            titlescreen = new TitleScreen();
+=======
             player = new Character1();
             enemy = new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80));
-            titlescreen = new TitleScreen();
+>>>>>>> SetupEnemies
         }
 
         /// <summary>
@@ -55,7 +63,6 @@ namespace Top_Down_Shooter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             LoadAssets.LoadContent(Content);
-            SoundManager.PlaySong(LoadAssets.TestSong);
         }
 
         /// <summary>
@@ -78,8 +85,11 @@ namespace Top_Down_Shooter
             activeTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             player.Update();
-            enemy.Update();
+<<<<<<< HEAD
             titlescreen.Update();
+=======
+            enemy.Update();
+>>>>>>> SetupEnemies
 
             base.Update(gameTime);
         }
@@ -94,9 +104,13 @@ namespace Top_Down_Shooter
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, null, SamplerState.PointClamp, null, null, null);
 
+<<<<<<< HEAD
             titlescreen.Draw(spriteBatch);
-            enemy.Draw(spriteBatch);
+            //player.Draw(spriteBatch);
+=======
             player.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
+>>>>>>> SetupEnemies
 
             spriteBatch.End();
 
