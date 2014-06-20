@@ -13,7 +13,7 @@ namespace Top_Down_Shooter
     {
         //The object this hurtbox is attached to (NOTE: May not actually be needed)
         public LevelObject levelObject;
-
+        
         //The bounding box for the rectangle
         public Rectangle Bounds;
 
