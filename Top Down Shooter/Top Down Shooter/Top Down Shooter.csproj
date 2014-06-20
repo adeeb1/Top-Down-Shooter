@@ -140,6 +140,7 @@
     <Compile Include="LoadAssets.cs" />
     <Compile Include="Menus\MenuScreen.cs" />
     <Compile Include="Characters\Character.cs" />
+    <Compile Include="Menus\OptionScreen.cs" />
     <Compile Include="Menus\TitleScreen.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
