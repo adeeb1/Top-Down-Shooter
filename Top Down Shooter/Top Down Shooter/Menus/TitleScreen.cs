@@ -13,11 +13,25 @@ namespace Top_Down_Shooter
     {
         public TitleScreen()
         {
-            MenuOptions.Add("Test");
-            MenuOptions.Add("Test 2");
+            MenuOptions.Add("Start Game");
+            MenuOptions.Add("Options");
             
             OptionPositions.Add(new Vector2(50, 50));
             OptionPositions.Add(new Vector2(50, 100));
+        }
+
+        protected override void PickOption(Main main)
+        {
+            switch (SelectedOption)
+            {
+                case 0: // Start Game
+                    // Start the game
+                    main.ChangeGameState(GameState.InGame);
+                    break;
+                case 1: // Options
+                    main.AddScreen(new OptionScreen());
+                    break;
+            }
         }
 
 

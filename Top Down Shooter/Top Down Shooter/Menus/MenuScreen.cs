@@ -43,20 +43,29 @@ namespace Top_Down_Shooter
 
             MenuFont = LoadAssets.MenuFont;
 
-            // Create a new keyboard state
-            keyboardState = new KeyboardState();
+            // Reset the user's input
+            ResetInput();
+        }
+
+        public void ResetInput()
+        {
+            // Create a new keyboard state with the Enter, Up, Down, Left, and Right keys already pressed
+            keyboardState = new KeyboardState(Keys.Enter, Keys.Up, Keys.Down, Keys.Left, Keys.Right);
         }
 
         // Method for moving the cursor
         protected virtual void CursorMove()
         {
+            // Get the index value of the last item in the MenuOptions list
+            int LastMenuOption = (MenuOptions.Count - 1);
+
             // Check if the user can move the cursor left
             if (Input.IsKeyDown(keyboardState, Keys.Left) == true && SelectedOption > 0)
             {
                 SelectedOption -= 1;
             }
             // Check if the user can move right
-            if (Input.IsKeyDown(keyboardState, Keys.Right) == true && SelectedOption < (MenuOptions.Count - 1))
+            if (Input.IsKeyDown(keyboardState, Keys.Right) == true && SelectedOption < LastMenuOption)
             {
                 SelectedOption += 1;
             }
@@ -66,16 +75,28 @@ namespace Top_Down_Shooter
                 SelectedOption -= 1;
             }
             // Check if the user can move down
-            if (Input.IsKeyDown(keyboardState, Keys.Down) == true && SelectedOption < (MenuOptions.Count - 1))
+            if (Input.IsKeyDown(keyboardState, Keys.Down) == true && SelectedOption < LastMenuOption)
             {
                 SelectedOption += 1;
             }
         }
 
-        public virtual void Update()
+        protected virtual void PickOption(Main main)
+        {
+            // Nothing here for the base class
+        }
+
+        public virtual void Update(Main main)
         {
             // Move the cursor if possible
             CursorMove();
+            
+            // Check if the user pressed the "Enter" key
+            if (Input.IsKeyDown(keyboardState, Keys.Enter))
+            {
+                // Pick the selected option
+                PickOption(main);
+            }
 
             // Update the keyboard state with the global state
             keyboardState = Keyboard.GetState();
@@ -85,12 +106,12 @@ namespace Top_Down_Shooter
         {
             // Get the selected option
             Vector2 TheOption = OptionPositions[SelectedOption];
-
+            
             for (int i = 0; i < MenuOptions.Count; i++)
             {
                 spriteBatch.DrawString(MenuFont, MenuOptions[i], OptionPositions[i], Color.Black);
             }
-
+            
             spriteBatch.Draw(CursorTexture, new Rectangle((int)(TheOption.X - CursorXDiff), (int)TheOption.Y, CursorTexture.Width, CursorTexture.Height), Color.White);
         }
 

@@ -60,6 +60,12 @@ namespace Top_Down_Shooter
             // Move the player if possible
             PlayerMove();
 
+            //TESTING SOUNDS ONLY; REMOVE LATER
+            if (Input.IsKeyDown(keyboardState, Keys.Q) == true)
+            {
+                SoundManager.PlaySound(LoadAssets.TestSound);
+            }
+
             // Update the keyboard state with the global state
             keyboardState = Keyboard.GetState();
         }

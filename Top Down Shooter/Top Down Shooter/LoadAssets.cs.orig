@@ -6,26 +6,19 @@ using System.Threading.Tasks;
 using MonoGame.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 
 namespace Top_Down_Shooter
 {
     //Load all assets here
-    //All sound files MUST be 16-bit .wav files, and all music files MUST be .wma files since this is being built for Windows 8
-    //All music files MUST contain both the .xnb and the .wav file to play (it can't load with just the .wav and it can't play with just the .xnb)!
     public static class LoadAssets
     {
         public static Texture2D TestTexture;
+<<<<<<< HEAD
         public static Texture2D CursorTexture;
-        public static Texture2D EnemyTestTexture;
         public static SpriteFont MenuFont;
-
-        //Sounds
-        public static SoundEffect TestSound;
-
-        //Music
-        public static Song TestSong;
+=======
+        public static Texture2D EnemyTestTexture;
+>>>>>>> SetupEnemies
 
         //Static variables here
         static LoadAssets()
@@ -44,22 +37,26 @@ namespace Top_Down_Shooter
         //Load all graphics
         public static void LoadGraphics(ContentManager Content)
         {
-            TestTexture = Content.Load<Texture2D>("Graphics\\test");
+<<<<<<< HEAD
+            TestTexture = Content.Load<Texture2D>("Graphics/test");
             CursorTexture = Content.Load<Texture2D>("Graphics/cursor");
-            EnemyTestTexture = Content.Load<Texture2D>("Graphics\\enemytest");
             MenuFont = Content.Load<SpriteFont>("Graphics/MenuFont");
+=======
+            TestTexture = Content.Load<Texture2D>("Graphics\\test");
+            EnemyTestTexture = Content.Load<Texture2D>("Graphics\\enemytest");
+>>>>>>> SetupEnemies
         }
 
         //Load all music
         public static void LoadMusic(ContentManager Content)
         {
-            TestSong = Content.Load<Song>("Music\\Mario Party - Peaceful Mushroom Village");
+
         }
 
         //Load all sounds
         public static void LoadSounds(ContentManager Content)
         {
-            TestSound = Content.Load<SoundEffect>("Sounds/test");
+
         }
     }
 }
