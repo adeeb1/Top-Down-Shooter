@@ -14,6 +14,12 @@ namespace Top_Down_Shooter
             MoveSpeed = new Vector2(5, 5);
 
             Health = 20;
+
+            PlayerGun = new MachineGun(ObjectPos, ObjectDir, int.MaxValue, int.MaxValue, 200);
+
+            PlayerGun.GunOwner = this;
         }
+
+
     }
 }

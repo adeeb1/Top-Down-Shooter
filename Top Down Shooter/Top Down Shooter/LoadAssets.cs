@@ -19,6 +19,8 @@ namespace Top_Down_Shooter
         public static Texture2D TestTexture;
         public static Texture2D CursorTexture;
         public static Texture2D EnemyTestTexture;
+        public static Texture2D GunTestTexture;
+        public static Texture2D ProjectileTestTexture;
         public static SpriteFont MenuFont;
 
         //Sounds
@@ -47,6 +49,8 @@ namespace Top_Down_Shooter
             TestTexture = Content.Load<Texture2D>("Graphics\\test");
             CursorTexture = Content.Load<Texture2D>("Graphics/cursor");
             EnemyTestTexture = Content.Load<Texture2D>("Graphics\\enemytest");
+            GunTestTexture = Content.Load<Texture2D>("Graphics\\guntest");
+            ProjectileTestTexture = Content.Load<Texture2D>("Graphics\\projectiletest");
             MenuFont = Content.Load<SpriteFont>("Graphics/MenuFont");
         }
 

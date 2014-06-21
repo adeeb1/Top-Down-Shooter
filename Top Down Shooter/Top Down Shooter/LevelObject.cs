@@ -11,6 +11,15 @@ namespace Top_Down_Shooter
     // Base level object class
     public abstract class LevelObject
     {
+        // Enum for dictating the possible directions of the object
+        public enum Direction : byte { Left, Up, Right, Down };
+
+        // Object texture
+        public Texture2D ObjectTexture;
+
+        // Stores the direction of the object
+        public Direction ObjectDir;
+
         // Object Position
         public Vector2 ObjectPos;
 
