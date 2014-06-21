@@ -131,8 +131,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Characters\Character1.cs" />
+    <Compile Include="Collideable.cs" />
+    <Compile Include="Debug.cs" />
     <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="Enemies\Enemy1.cs" />
+    <Compile Include="Guns\Gun.cs" />
+    <Compile Include="Guns\MachineGun.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Hitbox.cs" />
     <Compile Include="Hurtbox.cs" />
     <Compile Include="Input.cs" />
@@ -144,6 +149,8 @@
     <Compile Include="Menus\TitleScreen.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Projectiles\Projectile1.cs" />
+    <Compile Include="Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoundManager.cs" />
   </ItemGroup>
@@ -151,9 +158,12 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Content\Graphics\guntest.png" />
     <Content Include="Content\Graphics\MenuFont.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Graphics\projectiletest.png" />
+    <Content Include="Content\Graphics\ScalableBox.png" />
     <Content Include="Content\Music\Mario Party - Peaceful Mushroom Village.wma">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

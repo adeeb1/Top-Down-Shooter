@@ -121,12 +121,19 @@ namespace Top_Down_Shooter
                 case GameState.InGame: // Update the in-game objects
                     player.Update();
                     enemy.Update();
+                    player.PlayerGun.Update();
+
+                    for (int i = 0; i < player.PlayerGun.GunProjectiles.Count; i++)
+                    {
+                        player.PlayerGun.GunProjectiles[i].Update();
+                    }
 
                     break;
                 case GameState.Paused: // Don't update any in-game objects
                     break;
             }
 
+            Debug.Update();
             base.Update(gameTime);
         }
 
@@ -146,11 +153,23 @@ namespace Top_Down_Shooter
                 case GameState.InGame: // Draw the in-game objects
                     enemy.Draw(spriteBatch);
                     player.Draw(spriteBatch);
-                    
+                    player.PlayerGun.Draw(spriteBatch);
+
+                    for (int i = 0; i < player.PlayerGun.GunProjectiles.Count; i++)
+                    {
+                        player.PlayerGun.GunProjectiles[i].Draw(spriteBatch);
+                    }
+
                     break;
                 case GameState.Paused: // Don't update any in-game objects
                     enemy.Draw(spriteBatch);
                     player.Draw(spriteBatch);
+                    player.PlayerGun.Draw(spriteBatch);
+
+                    for (int i = 0; i < player.PlayerGun.GunProjectiles.Count; i++)
+                    {
+                        player.PlayerGun.GunProjectiles[i].Draw(spriteBatch);
+                    }
 
                     break;
             }
