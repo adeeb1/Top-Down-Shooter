@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Top_Down_Shooter
 {
     // Base level object class
-    public abstract class LevelObject
+    public abstract class LevelObject : Collideable
     {
         // Object Position
         public Vector2 ObjectPos;
@@ -17,12 +17,25 @@ namespace Top_Down_Shooter
         //How fast the object moves
         public Vector2 MoveSpeed;
 
+        //The object's hurtbox; set to null if it doesn't use one
+        public Hurtbox hurtbox;
+
         //Object health (not required to be used)
         public int Health;
 
         public LevelObject()
         {
 
+        }
+
+        //The bounding box for movement and damage collisions for level objects
+        public Rectangle BoundingBox
+        {
+            get 
+            {
+                if (hurtbox != null) return hurtbox.Bounds;
+                else return Rectangle.Empty;
+            }
         }
 
         //Sets the draw depth of a level object
@@ -45,6 +58,31 @@ namespace Top_Down_Shooter
 
         }
 
+        //Interface defaults; override them in the derived classes
+        public bool TouchedX(Rectangle boundingbox)
+        {
+            return false;
+        }
+
+        public bool TouchedY(Rectangle boundingbox)
+        {
+            return false;
+        }
+
+        //Default behavior of do nothing
+        //For an object like a projectile, you may want the projectile to be removed from the level
+        public void Touches(LevelObject levelobject)
+        {
+
+        }
+
+        //Default behavior of do nothing
+        //For an object like a land mine, you may want it to explode
+        public void OnTouched(LevelObject levelobject)
+        {
+
+        }
+
         public virtual void Update()
         {
 
@@ -52,7 +90,8 @@ namespace Top_Down_Shooter
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-
+            if (Debug.HurtboxDraw == true && hurtbox != null)
+                hurtbox.Draw(spriteBatch);
         }
     }
 }

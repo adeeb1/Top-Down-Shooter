@@ -127,6 +127,7 @@ namespace Top_Down_Shooter
                     break;
             }
 
+            Debug.Update();
             base.Update(gameTime);
         }
 
