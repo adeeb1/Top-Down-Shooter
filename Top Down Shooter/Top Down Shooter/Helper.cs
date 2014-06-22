@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Windows.Storage;
 
 namespace Top_Down_Shooter
 {
@@ -47,6 +48,12 @@ namespace Top_Down_Shooter
             // Return a new Vector2 with the coordinates for the child object
             return (new Vector2(X, Y));
         }
+
+        // Retrieves a file from the app's designated storage location
+        //public static StorageFile GetFile(String FileName)
+        //{
+
+        //}
 
 
     }

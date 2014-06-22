@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using SharpDX;
 using SharpDX.XAudio2;
 using SharpDX.Windows;
+using Windows.Storage;
 
 namespace Top_Down_Shooter
 {
@@ -19,13 +21,23 @@ namespace Top_Down_Shooter
     {
         public static float SoundVolume;
         public static float MusicVolume;
-
+        
         static SoundManager()
         {
             //Initialize them to the middle value of .5f
-            SoundVolume = MusicVolume = .5f;
+            SoundVolume = MusicVolume = MediaPlayer.Volume = .5f;
+        }
 
-            MediaPlayer.Volume = .5f;
+        // Sets the sound volume
+        public static void SetSoundVolume(float volume)
+        {
+            SoundVolume = volume;
+        }
+
+        // Sets the music volume
+        public static void SetMusicVolume(float volume)
+        {
+            MusicVolume = MediaPlayer.Volume = volume;
         }
 
         //Plays a sound with the default pitch and pan values
@@ -47,5 +59,30 @@ namespace Top_Down_Shooter
                 MediaPlayer.IsRepeating = loop;
             }
         }
+
+        public static void SaveVolumeSettings()
+        {
+            // Put the two volume settings in an array
+            float[] Volumes = new float[2] { MusicVolume, SoundVolume };
+
+            // Store the music and sound volume settings in a HighPriority roaming setting for instant syncing across devices
+            ApplicationData.Current.RoamingSettings.Values["HighPriority"] = Volumes;
+        }
+
+        public static void LoadVolumeSettings()
+        {
+            // Check if the player's volume settings were previously saved
+            if (ApplicationData.Current.RoamingSettings.Values["HighPriority"] != null)
+            {
+                // Retrieve the volume values
+                float[] Volumes = (float[])ApplicationData.Current.RoamingSettings.Values["HighPriority"];
+
+                // Set the Music and Sound volumes
+                SetMusicVolume(Volumes[0]);
+                SetSoundVolume(Volumes[1]);
+            }
+        }
+
+
     }
 }
