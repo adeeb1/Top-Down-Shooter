@@ -20,6 +20,9 @@ namespace Top_Down_Shooter
         // Stores the direction of the object
         public Direction ObjectDir;
 
+        //Level reference
+        public BaseLevel Level;
+
         // Object Position
         public Vector2 ObjectPos;
 
@@ -90,6 +93,56 @@ namespace Top_Down_Shooter
         public void OnTouched(LevelObject levelobject)
         {
 
+        }
+
+        //Checks if the level object is about to collide with another level object
+        //It returns the first LevelObject that is touched
+        /*NOTE: Talk about returning all the objects you touch so we can maybe do all the hitbox/hurtbox interactions as well as movement collisions
+                in one loop!*/
+        protected virtual LevelObject Collided()
+        {
+            //Go through all the level objects
+            for (int i = 0; i < Level.levelObjects.Count; i++)
+            {
+                //Don't check for collisions with itself
+                if (this != Level.levelObjects[i])
+                {
+                    //If X speed is 0, don't bother checking
+                    if (MoveSpeed.X != 0f)
+                    {
+                        if (Level.levelObjects[i].TouchedX(BoundingBox) == true)
+                            return Level.levelObjects[i];
+                    }
+
+                    //If Y speed is 0, don't bother checking
+                    if (MoveSpeed.Y != 0f)
+                    {
+                        if (Level.levelObjects[i].TouchedY(BoundingBox) == true)
+                            return Level.levelObjects[i];
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        //Causes a level object to move; there is an option to move taking collision into account, which is set to true by default
+        public virtual void Move(Vector2 moveamount, bool collision = true)
+        {
+            //No collision; simply move
+            if (collision == false) ObjectPos += moveamount;
+            else
+            {
+                //Check if we touched anything
+                LevelObject objtouched = Collided();
+
+                //We did, so do something
+                if (objtouched != null)
+                {
+                    Touches(objtouched);
+                    objtouched.OnTouched(this);
+                }
+            }
         }
 
         public virtual void Update()

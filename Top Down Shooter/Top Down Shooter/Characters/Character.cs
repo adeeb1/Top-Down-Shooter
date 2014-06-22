@@ -34,10 +34,13 @@ namespace Top_Down_Shooter
         // Method for moving the player
         protected virtual void PlayerMove()
         {
+            Vector2 totalmovement = Vector2.Zero;
+
             // Check if the user can move left
             if (Input.IsKeyHeld(Keys.Left) == true)
             {
-                ObjectPos.X -= MoveSpeed.X;
+                //ObjectPos.X -= MoveSpeed.X;
+                totalmovement.X -= MoveSpeed.X;
 
                 PlayerGun.ObjectPos = Helper.CenterGraphic(Direction.Left, this, PlayerGun);
 
@@ -47,7 +50,8 @@ namespace Top_Down_Shooter
             // Check if the user can move right
             if (Input.IsKeyHeld(Keys.Right) == true)
             {
-                ObjectPos.X += MoveSpeed.X;
+                //ObjectPos.X += MoveSpeed.X;
+                totalmovement.X += MoveSpeed.X;
 
                 PlayerGun.ObjectPos = Helper.CenterGraphic(Direction.Right, this, PlayerGun);
                 
@@ -57,7 +61,8 @@ namespace Top_Down_Shooter
             // Check if the user can move up
             if (Input.IsKeyHeld(Keys.Up) == true)
             {
-                ObjectPos.Y -= MoveSpeed.Y;
+                //ObjectPos.Y -= MoveSpeed.Y;
+                totalmovement.Y -= MoveSpeed.Y;
 
                 PlayerGun.ObjectPos = Helper.CenterGraphic(Direction.Up, this, PlayerGun);
 
@@ -67,13 +72,16 @@ namespace Top_Down_Shooter
             // Check if the user can move down
             if (Input.IsKeyHeld(Keys.Down) == true)
             {
-                ObjectPos.Y += MoveSpeed.Y;
+                //ObjectPos.Y += MoveSpeed.Y;
+                totalmovement.Y += MoveSpeed.Y;
 
                 PlayerGun.ObjectPos = Helper.CenterGraphic(Direction.Down, this, PlayerGun);
 
                 // Set the direction of the player and the player's gun to down
                 ObjectDir = PlayerGun.ObjectDir = Direction.Down;
             }
+
+            ObjectPos += totalmovement;
         }
 
         public void ShootGun()
