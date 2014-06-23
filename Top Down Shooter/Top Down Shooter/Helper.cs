@@ -48,6 +48,9 @@ namespace Top_Down_Shooter
             return (new Vector2(X, Y));
         }
 
-
+        public static Rectangle CreateRect(Vector2 objectpos, int width, int height)
+        {
+            return new Rectangle((int)objectpos.X, (int)objectpos.Y, width, height);
+        }
     }
 }

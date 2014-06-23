@@ -12,9 +12,6 @@ namespace Top_Down_Shooter
     //Base Enemy class
     public abstract class Enemy : LevelObject
     {
-        //Enemy graphic (will be an animation later)
-        public Texture2D EnemyTexture;
-
         public Enemy()
         {
 
@@ -28,12 +25,12 @@ namespace Top_Down_Shooter
 
         public override void Update()
         {
-
+            UpdateCollisionBoxes();
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(EnemyTexture, ObjectPos, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, SetDrawDepth());
-        }
+        //public override void Draw(SpriteBatch spriteBatch)
+        //{
+        //    
+        //}
     }
 }

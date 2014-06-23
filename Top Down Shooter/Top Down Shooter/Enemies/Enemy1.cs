@@ -12,7 +12,10 @@ namespace Top_Down_Shooter
     {
         public Enemy1(Texture2D graphic, Vector2 location)
         {
-            EnemyTexture = graphic;
+            ObjectTexture = graphic;
+            Health = 1;
+
+            hurtbox = new Hurtbox(this, Helper.CreateRect(ObjectPos, ObjectTexture.Width, ObjectTexture.Height), 0);
 
             ObjectPos = location;
         }

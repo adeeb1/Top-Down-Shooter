@@ -20,6 +20,6 @@ namespace Top_Down_Shooter
         void Touches(LevelObject levelobject);
 
         //Does something when the object is touched
-        void OnTouched(LevelObject levelobject);
+        void WhenTouched(LevelObject levelobject);
     }
 }

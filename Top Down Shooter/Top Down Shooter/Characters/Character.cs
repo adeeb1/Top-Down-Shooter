@@ -104,7 +104,13 @@ namespace Top_Down_Shooter
             // Move the player if possible
             PlayerMove();
 
-            ShootGun();
+            UpdateCollisionBoxes();
+
+            if (PlayerGun != null)
+            { 
+                ShootGun();
+                PlayerGun.Update();
+            }
 
             //TESTING SOUNDS ONLY; REMOVE LATER
             if (Input.IsKeyDown(keyboardState, Keys.Q) == true)
@@ -118,7 +124,8 @@ namespace Top_Down_Shooter
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(ObjectTexture, ObjectPos, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, SetDrawDepth());
+            base.Draw(spriteBatch);
+            if (PlayerGun != null) PlayerGun.Draw(spriteBatch);
         }
     }
 }
