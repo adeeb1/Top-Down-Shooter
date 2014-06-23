@@ -49,15 +49,16 @@ namespace Top_Down_Shooter
             return (new Vector2(X, Y));
         }
 
+<<<<<<< HEAD
         public static Rectangle CreateRect(Vector2 objectpos, int width, int height)
         {
             return new Rectangle((int)objectpos.X, (int)objectpos.Y, width, height);
         }
-        
+=======
         // Retrieves a subfolder from the app's designated storage location
         public static async Task<StorageFolder> GetFolder(String FolderName)
         {
-      	    //Get the app's local storage folder
+            // Get the app's local storage folder
             StorageFolder folder = ApplicationData.Current.LocalFolder;
 
             // Try to get the subfolder in the storage folder. If the folder is not found, the StorageFolder will be null
@@ -100,5 +101,7 @@ namespace Top_Down_Shooter
             await folder.CreateFileAsync(FileName, CreationCollisionOption.ReplaceExisting);
         }
 
+
+>>>>>>> OptionsScreen
     }
 }

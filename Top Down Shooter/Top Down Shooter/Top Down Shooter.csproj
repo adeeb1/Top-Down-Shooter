@@ -142,6 +142,7 @@
     <Compile Include="Hurtbox.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="LevelObject.cs" />
+    <Compile Include="Levels\BaseLevel.cs" />
     <Compile Include="LoadAssets.cs" />
     <Compile Include="Menus\MenuScreen.cs" />
     <Compile Include="Characters\Character.cs" />

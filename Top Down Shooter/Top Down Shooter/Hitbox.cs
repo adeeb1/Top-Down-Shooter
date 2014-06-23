@@ -15,6 +15,9 @@ namespace Top_Down_Shooter
         //An infinite duration for a hitbox, -1
         public const float InfDuration = -1f;
 
+        //The object this hitbox is attached to
+        public LevelObject hitboxOwner;
+
         //The bounding box of the hitbox
         public Rectangle Bounds;
 
@@ -32,17 +35,24 @@ namespace Top_Down_Shooter
         protected float Duration;
         protected float StartDuration;
 
-        //The hurtboxes that this hitbox hit; this prevents it from hitting the same hurtbox again
-        /*NOTE: This MAY not be needed in the majority of cases since bullets will disappear upon hitting something, but in the event that
-                there's a hitbox that doesn't disappear upon contact (Ex: bullet that goes through enemies), this will be required*/
-        private List<Hurtbox> Hurtboxes;
-
         //Constructor
         public Hitbox()
         {
-            Hurtboxes = new List<Hurtbox>();
-
             Delay = Duration = StartDelay = StartDuration = 0f;
+        }
+
+        public Hitbox(LevelObject hitboxowner, Rectangle bounds, int damage, float delay, float duration) : this()
+        {
+            hitboxOwner = hitboxowner;
+            Bounds = bounds;
+            Damage = damage;
+
+            SetHitboxProperties(delay, duration);
+        }
+
+        public Hitbox(LevelObject hitboxowner, Rectangle bounds, int damage, float delay, float duration, Vector2 impactforce) : this(hitboxowner, bounds, damage, delay, duration)
+        {
+            ImpactForce = impactforce;
         }
 
         //Set initial hitbox properties, like duration and delay
@@ -58,20 +68,22 @@ namespace Top_Down_Shooter
         //Checks if the hitbox can hit
         public bool CanHit
         {
-            get { return (Main.activeTime >= StartDelay && ((Main.activeTime < StartDuration) || StartDuration == InfDuration)); }
+            get { return (Main.activeTime >= StartDelay && ((Main.activeTime < StartDuration) || Duration == InfDuration)); }
         }
 
         //Checks if a hitbox touches a hurtbox
-        //It could not have hit the hurtbox previously
         public bool CanHitObject(Hurtbox objecthurtbox)
         {
-            return (Hurtboxes.Contains(objecthurtbox) == false && Bounds.Intersects(objecthurtbox.Bounds));
+            return (CanHit == true && Bounds.Intersects(objecthurtbox.Bounds));
         }
 
-        //Occurs when the hitbox collides with a hurtbox; add the hurtbox to the list of hurtboxes that were hit
-        public void SetHurtbox(Hurtbox objecthurtbox)
+        //Update the location of the hurtbox to be on its owner
+        public void Update()
         {
-            Hurtboxes.Add(objecthurtbox);
+            Vector2 ownerloc = hitboxOwner.PosWithOrigin;
+
+            Bounds.X = (int)ownerloc.X;
+            Bounds.Y = (int)ownerloc.Y;
         }
 
         //Draw the hitbox (debug info only)

@@ -12,7 +12,7 @@ namespace Top_Down_Shooter
     public abstract class Gun : LevelObject
     {
         // Stores all the projectiles created by the gun
-        public List<Projectile> GunProjectiles;
+        //public List<Projectile> GunProjectiles;
 
         // Stores a reference to the LevelObject (player or enemy)
         public LevelObject GunOwner;
@@ -31,7 +31,7 @@ namespace Top_Down_Shooter
 
         public Gun()
         {
-            GunProjectiles = new List<Projectile>();
+            //GunProjectiles = new List<Projectile>();
         }
 
         public void SetGunProperties(Vector2 position, Direction direction, int maxAmmo, int ammoLeft, float shootDelayTime)
@@ -57,8 +57,8 @@ namespace Top_Down_Shooter
                 if (AmmoLeft > 0)
                 {
                     // Create a new projectile
-                    GunProjectiles.Add(new Projectile1(this, ObjectPos, ObjectDir));
-                    
+                    GunOwner.Level.AddObject(new Projectile1(this, ObjectPos, ObjectDir));
+
                     // Subtract the quantity of ammo left by 1
                     AmmoLeft -= 1;
 
@@ -73,10 +73,13 @@ namespace Top_Down_Shooter
             }
         }
 
-        public override void Update()
-        {
-            
-        }
+        //public override void Update()
+        //{
+        //    for (int i = 0; i < GunProjectiles.Count; i++)
+        //    {
+        //        GunProjectiles[i].Update();
+        //    }
+        //}
 
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -84,7 +87,12 @@ namespace Top_Down_Shooter
             // TODO: Add in rotation so that when facing up or down, the gun is rotated 90 degrees
             // TODO: Add in rotation so that when facing up or down, the gun is rotated 90 degrees
 
-            spriteBatch.Draw(ObjectTexture, ObjectPos, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, SetDrawDepth());
+            spriteBatch.Draw(ObjectTexture, ObjectPos, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+
+            //for (int i = 0; i < GunProjectiles.Count; i++)
+            //{
+            //    GunProjectiles[i].Draw(spriteBatch);
+            //}
         }
 
 

@@ -15,6 +15,9 @@ namespace Top_Down_Shooter
         //Time the game is active
         public static float activeTime;
 
+        //Level reference
+        private BaseLevel Level;
+
         private Character1 player;
         private Enemy1 enemy;
 
@@ -44,9 +47,10 @@ namespace Top_Down_Shooter
         {
             // TODO: Add your initialization logic here
             base.Initialize();
-            
-            player = new Character1();
-            enemy = new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80));
+
+            Level = new BaseLevel();
+            Level.AddObject(new Character1());
+            Level.AddObject(new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80)));
 
             // Create a new stack of MenuScreen objects
             MenuScreens = new Stack<MenuScreen>();
@@ -64,12 +68,17 @@ namespace Top_Down_Shooter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             LoadAssets.LoadContent(Content);
-            SoundManager.PlaySong(LoadAssets.TestSong);
+            //SoundManager.PlaySong(LoadAssets.TestSong);
         }
 
         protected override void UnloadContent()
         {
             
+        }
+
+        public GameState GetGameState
+        {
+            get { return gameState; }
         }
 
         public void AddScreen(MenuScreen screen)
@@ -119,17 +128,21 @@ namespace Top_Down_Shooter
 
                     break;
                 case GameState.InGame: // Update the in-game objects
-                    player.Update();
-                    enemy.Update();
-                    player.PlayerGun.Update();
+                    Level.Update(this);
 
-                    for (int i = 0; i < player.PlayerGun.GunProjectiles.Count; i++)
-                    {
-                        player.PlayerGun.GunProjectiles[i].Update();
-                    }
+                    //player.Update();
+                    //enemy.Update();
+                    //player.PlayerGun.Update();
+                    //
+                    //for (int i = 0; i < player.PlayerGun.GunProjectiles.Count; i++)
+                    //{
+                    //    player.PlayerGun.GunProjectiles[i].Update();
+                    //}
 
                     break;
                 case GameState.Paused: // Don't update any in-game objects
+                    //TEMPORARY
+                    Level.Update(this);
                     break;
             }
 
@@ -151,25 +164,27 @@ namespace Top_Down_Shooter
                     
                     break;
                 case GameState.InGame: // Draw the in-game objects
-                    enemy.Draw(spriteBatch);
-                    player.Draw(spriteBatch);
-                    player.PlayerGun.Draw(spriteBatch);
-
-                    for (int i = 0; i < player.PlayerGun.GunProjectiles.Count; i++)
-                    {
-                        player.PlayerGun.GunProjectiles[i].Draw(spriteBatch);
-                    }
+                    Level.Draw(spriteBatch);
+                    //enemy.Draw(spriteBatch);
+                    //player.Draw(spriteBatch);
+                    //player.PlayerGun.Draw(spriteBatch);
+                    //
+                    //for (int i = 0; i < player.PlayerGun.GunProjectiles.Count; i++)
+                    //{
+                    //    player.PlayerGun.GunProjectiles[i].Draw(spriteBatch);
+                    //}
 
                     break;
                 case GameState.Paused: // Don't update any in-game objects
-                    enemy.Draw(spriteBatch);
-                    player.Draw(spriteBatch);
-                    player.PlayerGun.Draw(spriteBatch);
-
-                    for (int i = 0; i < player.PlayerGun.GunProjectiles.Count; i++)
-                    {
-                        player.PlayerGun.GunProjectiles[i].Draw(spriteBatch);
-                    }
+                    Level.Draw(spriteBatch);
+                    //enemy.Draw(spriteBatch);
+                    //player.Draw(spriteBatch);
+                    //player.PlayerGun.Draw(spriteBatch);
+                    //
+                    //for (int i = 0; i < player.PlayerGun.GunProjectiles.Count; i++)
+                    //{
+                    //    player.PlayerGun.GunProjectiles[i].Draw(spriteBatch);
+                    //}
 
                     break;
             }

@@ -26,7 +26,7 @@ namespace Top_Down_Shooter
 
         public Projectile()
         {
-            
+            Health = 1;
         }
 
         public void SetProjectileProperties(Gun sourceGun, Vector2 position, Direction direction, Vector2 moveSpeed, float activeDelayTime)
@@ -94,6 +94,8 @@ namespace Top_Down_Shooter
 
                         break;
                 }
+
+                UpdateCollisionBoxes();
             }
 
             // TODO: Add collision logic
@@ -103,7 +105,8 @@ namespace Top_Down_Shooter
         {
             if (IsActive == true)
             {
-                spriteBatch.Draw(ObjectTexture, ObjectPos, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, SetDrawDepth());
+                spriteBatch.Draw(ObjectTexture, ObjectPos, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+                if (hitbox != null) hitbox.Draw(spriteBatch);
             }
         }
 
