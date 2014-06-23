@@ -59,22 +59,24 @@ namespace Top_Down_Shooter
             // Get the index value of the last item in the MenuOptions list
             int LastMenuOption = (MenuOptions.Count - 1);
 
-            // Check if the user can move the cursor left
-            if (Input.IsKeyDown(keyboardState, Keys.Left) == true && SelectedOption > 0)
+            // Check if the player moved the selection cursor left
+            if (Input.IsKeyDown(keyboardState, Keys.Left) == true)
             {
-                SelectedOption -= 1;
+                // Change the setting by -1
+                ChangeOption(-1);
             }
-            // Check if the user can move right
-            if (Input.IsKeyDown(keyboardState, Keys.Right) == true && SelectedOption < LastMenuOption)
+            // Check if the player moved the selection cursor right
+            if (Input.IsKeyDown(keyboardState, Keys.Right) == true)
             {
-                SelectedOption += 1;
+                // Change the setting by 1
+                ChangeOption(1);
             }
-            // Check if the user can move up
+            // Check if the player moved the selection cursor up
             if (Input.IsKeyDown(keyboardState, Keys.Up) == true && SelectedOption > 0)
             {
                 SelectedOption -= 1;
             }
-            // Check if the user can move down
+            // Check if the player moved the selection cursor down
             if (Input.IsKeyDown(keyboardState, Keys.Down) == true && SelectedOption < LastMenuOption)
             {
                 SelectedOption += 1;
@@ -82,6 +84,12 @@ namespace Top_Down_Shooter
         }
 
         protected virtual void PickOption(Main main)
+        {
+            // Nothing here for the base class
+        }
+
+        // Occurs when the user changes an option by pressing the Left or Right arrow keys
+        protected virtual void ChangeOption(int change)
         {
             // Nothing here for the base class
         }
