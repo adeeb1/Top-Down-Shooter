@@ -68,7 +68,7 @@ namespace Top_Down_Shooter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             LoadAssets.LoadContent(Content);
-            //SoundManager.PlaySong(LoadAssets.TestSong);
+            SoundManager.PlaySong(LoadAssets.TestSong);
         }
 
         protected override void UnloadContent()

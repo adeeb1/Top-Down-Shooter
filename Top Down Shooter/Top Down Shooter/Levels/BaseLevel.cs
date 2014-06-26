@@ -16,6 +16,9 @@ namespace Top_Down_Shooter
         private KeyboardState LevelKeyboard;
         public List<LevelObject> levelObjects;
 
+        //The level's tile engine
+        public TileEngine TileEngine;
+
         public BaseLevel()
         {
             levelObjects = new List<LevelObject>();
@@ -27,9 +30,8 @@ namespace Top_Down_Shooter
         {
             if (levelobject != null)
             {
+                levelobject.Level = this;
                 levelObjects.Add(levelobject);
-
-                levelObjects[levelObjects.Count - 1].Level = this;
             }
         }
 

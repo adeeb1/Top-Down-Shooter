@@ -35,7 +35,7 @@ namespace Top_Down_Shooter
                     break;
                 case LevelObject.Direction.Up:
                     X = (int)(Parent.ObjectPos.X + (Parent.ObjectTexture.Width / 2) - (Child.ObjectTexture.Width / 2));
-                    Y = (int)(Parent.ObjectPos.Y - Child.null.Height);
+                    Y = (int)(Parent.ObjectPos.Y - Child.ObjectTexture.Height);
 
                     break;
                 case LevelObject.Direction.Down:
@@ -74,7 +74,7 @@ namespace Top_Down_Shooter
             StorageFolder folder = ApplicationData.Current.LocalFolder;
 
             // Try to create the folder
-            await folder.CreateFolderAsync(FolderName, CreationCollisionOption.OpenIfExists)
+            await folder.CreateFolderAsync(FolderName, CreationCollisionOption.OpenIfExists);
         }
 
         // Retrieves a file from the app's designated storage location

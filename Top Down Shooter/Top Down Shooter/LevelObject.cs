@@ -62,6 +62,12 @@ namespace Top_Down_Shooter
             }
         }
 
+        //The location of the object's "feet"; where the object has collision with tiles
+        public Rectangle FeetLoc
+        {
+            get { return new Rectangle((int)ObjectPos.X, (int)ObjectPos.Y - (ObjectTexture.Height / 2), ObjectTexture.Width, ObjectTexture.Height / 2); }
+        }
+
         //The origin of drawing the object: the bottom-middle of the sprite
         protected Vector2 ObjectOrigin
         {
