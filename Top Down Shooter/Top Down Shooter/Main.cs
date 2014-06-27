@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Top_Down_Shooter
 {
@@ -30,12 +31,29 @@ namespace Top_Down_Shooter
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = (int)ScreenSize.X;
+            graphics.PreferredBackBufferHeight = (int)ScreenSize.Y;
             Content.RootDirectory = "Content";
+
+            IsMouseVisible = true;
+
+            // Enable the tap gesture
+            TouchPanel.EnabledGestures = GestureType.Tap;
         }
 
         static Main()
         {
             activeTime = 0f;
+        }
+
+        static Vector2 ScreenSize
+        {
+            get { return new Vector2(800, 480); }
+        }
+
+        static Vector2 ScreenHalf
+        {
+            get { return ScreenSize / 2; }
         }
 
         protected override void OnDeactivated(object sender, System.EventArgs args)
@@ -47,7 +65,7 @@ namespace Top_Down_Shooter
         {
             // TODO: Add your initialization logic here
             base.Initialize();
-
+            
             Level = new BaseLevel();
             Level.AddObject(new Character1());
             Level.AddObject(new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80)));
@@ -68,7 +86,7 @@ namespace Top_Down_Shooter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             LoadAssets.LoadContent(Content);
-            //SoundManager.PlaySong(LoadAssets.TestSong);
+            SoundManager.PlaySong(LoadAssets.TestSong);
         }
 
         protected override void UnloadContent()

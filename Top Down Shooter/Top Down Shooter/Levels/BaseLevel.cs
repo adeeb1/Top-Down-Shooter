@@ -16,38 +16,48 @@ namespace Top_Down_Shooter
         private KeyboardState LevelKeyboard;
         public List<LevelObject> levelObjects;
 
+        //The level's tile engine
+        public TileEngine TileEngine;
+
         public BaseLevel()
         {
             levelObjects = new List<LevelObject>();
 
             LevelKeyboard = new KeyboardState(Keys.Enter);
+            TileEngine = new TileEngine(new Vector2(800, 480));
         }
 
         public void AddObject(LevelObject levelobject)
         {
             if (levelobject != null)
             {
+                levelobject.Level = this;
                 levelObjects.Add(levelobject);
-
-                levelObjects[levelObjects.Count - 1].Level = this;
             }
         }
 
         private void HitboxCollision(int index)
         {
+            LevelObject victim = levelObjects[index];
+
             //Check for collisions
             for (int i = 0; i < levelObjects.Count; i++)
             {
                 //An object can't hit itself, so don't bother checking for that
                 if (i != index)
                 {
+                    LevelObject attacker = levelObjects[i];
+
                     //If an object has a hitbox and touched the hurtbox of the object we're checking for, make that object take damage
-                    if (levelObjects[i].hitbox != null && levelObjects[i].hitbox.CanHitObject(levelObjects[index].hurtbox) == true)
+                    if (attacker.hitbox != null && attacker.hitbox.CanHitObject(victim.hurtbox) == true)
                     {
-                        levelObjects[index].TakeDamage(levelObjects[i].hitbox);
-                        
+                        victim.TakeDamage(attacker.hitbox);
+
+                        //Do something extra to either object after the damage has been done (projectile exploding, etc.)
+                        attacker.DamagedObject(victim);
+
                         //If the object gained invincibility after taking damage, break out of the loop since there's no way it can get hurt now
-                        if (levelObjects[index].hurtbox.IsInvincible == true) break;
+                        if (victim.hurtbox.IsInvincible == true) break;
                     }
                 }
             }
@@ -97,6 +107,9 @@ namespace Top_Down_Shooter
         {
             for (int i = 0; i < levelObjects.Count; i++)
                 levelObjects[i].Draw(spriteBatch);
+            
+            if (Debug.TileDraw == true)
+                TileEngine.Draw(spriteBatch);
         }
     }
 }

@@ -21,5 +21,11 @@ namespace Top_Down_Shooter
 
         //Does something when the object is touched
         void WhenTouched(LevelObject levelobject);
+
+        //Does something when the object touches a tile
+        void TouchesTile(Tile tile);
+
+        //For damage collisions
+        void DamagedObject(LevelObject levelobject);
     }
 }

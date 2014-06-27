@@ -50,6 +50,27 @@ namespace Top_Down_Shooter
             ActiveTime = (Main.activeTime + ActiveDelayTime);
         }
 
+        public override void Touches(LevelObject levelobject)
+        {
+            Die();
+        }
+
+        public override void WhenTouched(LevelObject levelobject)
+        {
+            Die();
+        }
+
+        public override void TouchesTile(Tile tile)
+        {
+            if (tile.TileType == Tile.TileTypes.Block)
+                Die();
+        }
+
+        public override void DamagedObject(LevelObject levelobject)
+        {
+            Die();
+        }
+
         private void CheckActivateProjectile()
         {
             // Check if the projectile was not previously active
@@ -74,26 +95,30 @@ namespace Top_Down_Shooter
                 // Check if we need to activate the projectile, and activate it if so
                 CheckActivateProjectile();
 
+                Vector2 moveamount = Vector2.Zero;
+
                 // Adjust the position of the projectile based on the direction that it's facing
                 switch (ObjectDir)
                 {
                     case Direction.Left:
-                        ObjectPos.X -= MoveSpeed.X;
+                        moveamount.X -= MoveSpeed.X;
 
                         break;
                     case Direction.Right:
-                        ObjectPos.X += MoveSpeed.X;
+                        moveamount.X += MoveSpeed.X;
 
                         break;
                     case Direction.Up:
-                        ObjectPos.Y -= MoveSpeed.Y;
+                        moveamount.Y -= MoveSpeed.Y;
 
                         break;
                     case Direction.Down:
-                        ObjectPos.Y += MoveSpeed.Y;
+                        moveamount.Y += MoveSpeed.Y;
 
                         break;
                 }
+
+                Move(moveamount);
 
                 UpdateCollisionBoxes();
             }
@@ -109,7 +134,5 @@ namespace Top_Down_Shooter
                 if (hitbox != null) hitbox.Draw(spriteBatch);
             }
         }
-
-
     }
 }

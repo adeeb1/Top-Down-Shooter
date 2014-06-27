@@ -7,6 +7,7 @@ using MonoGame.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Top_Down_Shooter
 {
@@ -28,10 +29,17 @@ namespace Top_Down_Shooter
         // Stores the X distance of the cursor from the menu option (the Y position should be the same as the menu option) 
         public int CursorXDiff;
 
+        // The font of each menu
         public SpriteFont MenuFont;
 
         // Keyboard state
         public KeyboardState keyboardState;
+
+        // Mouse state
+        public MouseState mouseState;
+
+        // Touch state
+        public TouchPanelState touchState;
 
         public MenuScreen()
         {
@@ -83,6 +91,44 @@ namespace Top_Down_Shooter
             }
         }
 
+        // Method for automatically moving the selected option based on the mouse position
+        protected virtual void MouseMove()
+        {
+            // Loop through all of the menu options
+            for (int i = 0; i < MenuOptions.Count; i++)
+            {
+                // Check if the mouse is within the bounds of the option's rectangle
+                if (Input.IsMouseInRect(GetOptionRect(i)) == true)
+                {
+                    // Set the selected option to the current option in the loop
+                    SelectedOption = i;
+
+                    // Break out of the loop
+                    break;
+                }
+            }
+        }
+
+        protected virtual void TouchSelect(Main main)
+        {
+            // Loop through all of the menu options
+            for (int i = 0; i < MenuOptions.Count; i++)
+            {
+                // Check if the mouse is within the bounds of the option's rectangle
+                if (Input.IsTapInRect(GetOptionRect(i)) == true)
+                {
+                    // Set the selected option to the current option in the loop
+                    SelectedOption = i;
+
+                    // Try to pick the option immediately
+                    PickOption(main);
+
+                    // Break out of the loop
+                    break;
+                }
+            }
+        }
+
         protected virtual void PickOption(Main main)
         {
             // Nothing here for the base class
@@ -94,20 +140,40 @@ namespace Top_Down_Shooter
             // Nothing here for the base class
         }
 
+        protected Rectangle GetOptionRect(int OptionIndex)
+        {
+            // Measure the menu option
+            Vector2 OptionLength = MenuFont.MeasureString(MenuOptions[OptionIndex]);
+
+            // Create a new rectangle
+            return new Rectangle((int)OptionPositions[OptionIndex].X, (int)OptionPositions[OptionIndex].Y,
+                                 (int)OptionLength.X, (int)OptionLength.Y);
+        }
+
         public virtual void Update(Main main)
         {
+            touchState = TouchPanel.GetState(main.Window);
+
             // Move the cursor if possible
             CursorMove();
-            
-            // Check if the user pressed the "Enter" key
-            if (Input.IsKeyDown(keyboardState, Keys.Enter))
+
+            // If the player moves the mouse, select the option that is at the mouse position
+            MouseMove();
+
+            // If the player taps on the screen, select the option at the touch position and pick it immediately after
+            TouchSelect(main);
+
+            // Check if the user pressed the "Enter" key or pressed the left mouse button
+            if (Input.IsKeyDown(keyboardState, Keys.Enter) || (Input.IsLeftMouseButtonDown(mouseState) && Input.IsMouseInRect(GetOptionRect(SelectedOption))))
             {
                 // Pick the selected option
                 PickOption(main);
             }
 
-            // Update the keyboard state with the global state
+            // Update the keyboard, mouse, and touch states with the global state
             keyboardState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
+            touchState = TouchPanel.GetState(main.Window);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -121,6 +187,14 @@ namespace Top_Down_Shooter
             }
             
             spriteBatch.Draw(CursorTexture, new Rectangle((int)(TheOption.X - CursorXDiff), (int)TheOption.Y, CursorTexture.Width, CursorTexture.Height), Color.White);
+
+            if (Debug.OptionRectDraw == true)
+            {
+                for (int i = 0; i < MenuOptions.Count; i++)
+                {
+                    spriteBatch.Draw(LoadAssets.ScalableBox, GetOptionRect(i), null, Color.Green, 0f, Vector2.Zero, SpriteEffects.None, .999f);
+                }
+            }
         }
 
 
