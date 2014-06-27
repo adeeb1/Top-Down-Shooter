@@ -16,16 +16,19 @@ namespace Top_Down_Shooter
         public static bool HitboxDraw;
         public static bool HurtboxDraw;
         public static bool TileDraw;
+        public static bool OptionRectDraw;
 
         static Debug()
         {
             DebugKeyboard = new KeyboardState(Keys.Left, Keys.Right);
 
-            HitboxDraw = HurtboxDraw = TileDraw = false;
+            HitboxDraw = HurtboxDraw = TileDraw = OptionRectDraw = false;
         }
 
         public static void Update()
         {
+            if (Input.IsKeyDown(DebugKeyboard, Keys.Tab) == true) OptionRectDraw = !OptionRectDraw;
+
             //Debug commands; hold left shift and press an arrow key to enable/disable the drawing of hitboxes or hurtboxes
             if (Input.IsKeyHeld(Keys.LeftShift) == true)
             {
