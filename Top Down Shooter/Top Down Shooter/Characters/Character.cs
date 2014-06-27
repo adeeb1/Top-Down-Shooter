@@ -25,7 +25,7 @@ namespace Top_Down_Shooter
             MoveSpeed = new Vector2(10, 10);
 
             // Get the player's texture
-            ObjectTexture = LoadAssets.TestTexture;
+            ObjectTexture = LoadAssets.CharTest;
 
             // Create a new keyboard state
             keyboardState = new KeyboardState();

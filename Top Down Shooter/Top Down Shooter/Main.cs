@@ -19,9 +19,6 @@ namespace Top_Down_Shooter
         //Level reference
         private BaseLevel Level;
 
-        private Character1 player;
-        private Enemy1 enemy;
-
         // Stack of MenuScreen objects
         private Stack<MenuScreen> MenuScreens;
 
@@ -29,22 +26,16 @@ namespace Top_Down_Shooter
         private GameState gameState;
 
         // Screen size of the game
-        public static Vector2 ScreenSize;
+        public static readonly Vector2 ScreenSize;
 
         // Half the screen size of the game
-        public static Vector2 ScreenHalf;
+        public static readonly Vector2 ScreenHalf;
 
         // The scale factor that converts actual screen coordinates to game screen coordinates
         public static Vector2 ResolutionScaleFactor;
         
         public Main()
-        {
-            // Get the screen size
-            ScreenSize = new Vector2(800, 480);
-
-            // Get half the screen size
-            ScreenHalf = (ScreenSize / 2);
-            
+        {   
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = (int)ScreenSize.X;
             graphics.PreferredBackBufferHeight = (int)ScreenSize.Y;
@@ -63,6 +54,12 @@ namespace Top_Down_Shooter
         static Main()
         {
             activeTime = 0f;
+
+            // Get the screen size
+            ScreenSize = new Vector2(640, 384);
+
+            // Get half the screen size
+            ScreenHalf = (ScreenSize / 2);
         }
 
         protected override void OnDeactivated(object sender, System.EventArgs args)
