@@ -30,12 +30,24 @@ namespace Top_Down_Shooter
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = (int)ScreenSize.X;
+            graphics.PreferredBackBufferHeight = (int)ScreenSize.Y;
             Content.RootDirectory = "Content";
         }
 
         static Main()
         {
             activeTime = 0f;
+        }
+
+        static Vector2 ScreenSize
+        {
+            get { return new Vector2(800, 480); }
+        }
+
+        static Vector2 ScreenHalf
+        {
+            get { return ScreenSize / 2; }
         }
 
         protected override void OnDeactivated(object sender, System.EventArgs args)

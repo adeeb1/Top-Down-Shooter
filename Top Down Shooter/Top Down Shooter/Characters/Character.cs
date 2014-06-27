@@ -81,7 +81,7 @@ namespace Top_Down_Shooter
                 ObjectDir = PlayerGun.ObjectDir = Direction.Down;
             }
 
-            ObjectPos += totalmovement;
+            Move(totalmovement);
         }
 
         public void ShootGun()

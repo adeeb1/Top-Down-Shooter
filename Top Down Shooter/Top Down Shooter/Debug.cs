@@ -15,12 +15,13 @@ namespace Top_Down_Shooter
 
         public static bool HitboxDraw;
         public static bool HurtboxDraw;
+        public static bool TileDraw;
 
         static Debug()
         {
             DebugKeyboard = new KeyboardState(Keys.Left, Keys.Right);
 
-            HitboxDraw = HurtboxDraw = false;
+            HitboxDraw = HurtboxDraw = TileDraw = false;
         }
 
         public static void Update()
@@ -36,6 +37,11 @@ namespace Top_Down_Shooter
                 if (Input.IsKeyDown(DebugKeyboard, Keys.Right) == true)
                 {
                     HitboxDraw = !HitboxDraw;
+                }
+
+                if (Input.IsKeyDown(DebugKeyboard, Keys.T) == true)
+                {
+                    TileDraw = !TileDraw;
                 }
             }
 

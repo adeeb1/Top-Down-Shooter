@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Top_Down_Shooter
 {
@@ -16,7 +17,16 @@ namespace Top_Down_Shooter
         public TileEngine(int numx, int numy)
         {
             Tiles = new Tile[numx][];
-            for (int i = 0; i < Tiles.Length; i++) Tiles[i] = new Tile[numy];
+            for (int i = 0; i < Tiles.Length; i++)
+            {
+                Tiles[i] = new Tile[numy];
+
+                for (int j = 0; j < Tiles[i].Length; j++)
+                {
+                    Tiles[i][j] = new Tile(i, j);
+                }
+            }
+            Tiles[7][8] = new Tile(Tile.TileTypes.Block, 7, 8);
         }
 
         //Creates tiles based on a level size
@@ -27,7 +37,11 @@ namespace Top_Down_Shooter
 
         public Tile this[int x, int y]
         {
-            get { return Tiles[x][y]; }
+            get 
+            {
+                if (x > 0 && y > 0 && x < Tiles.Length && y < Tiles[x].Length) return Tiles[x][y];
+                else return new Tile();
+            }
         }
 
         //Gets the tile an object is on
@@ -37,7 +51,6 @@ namespace Top_Down_Shooter
         }
 
         //Checks for a tile in the direction the object is moving
-        //NOTE: This may be changed later to be more accurate
         public Tile CheckNextTile(Rectangle feetloc, Vector2 velocity)
         {
             Vector2 truefeetloc = new Vector2(feetloc.X, feetloc.Y);
@@ -46,6 +59,17 @@ namespace Top_Down_Shooter
             if (velocity.Y > 0) truefeetloc.Y += feetloc.Height;
 
             return GetTile(truefeetloc);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            for (int i = 0; i < Tiles.Length; i++)
+            {
+                for (int j = 0; j < Tiles[i].Length; j++)
+                {
+                    Tiles[i][j].Draw(spriteBatch);
+                }
+            }
         }
     }
 }

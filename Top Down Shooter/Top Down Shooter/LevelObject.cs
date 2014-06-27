@@ -128,26 +128,39 @@ namespace Top_Down_Shooter
         }
 
         //Interface defaults; override them in the derived classes
-        public bool TouchedX(Rectangle boundingbox)
+        public virtual bool TouchedX(Rectangle boundingbox)
         {
             return false;
         }
 
-        public bool TouchedY(Rectangle boundingbox)
+        public virtual bool TouchedY(Rectangle boundingbox)
         {
             return false;
         }
 
         //Default behavior of do nothing
         //For an object like a projectile, you may want the projectile to be removed from the level
-        public void Touches(LevelObject levelobject)
+        public virtual void Touches(LevelObject levelobject)
         {
 
         }
 
         //Default behavior of do nothing
         //For an object like a land mine, you may want it to explode
-        public void WhenTouched(LevelObject levelobject)
+        public virtual void WhenTouched(LevelObject levelobject)
+        {
+
+        }
+
+        //Default behavior; nothing
+        public virtual void TouchesTile(Tile tile)
+        {
+
+        }
+
+        //Default behavior; do nothing
+        //For a standard projectile, you'll want to destroy it
+        public virtual void DamagedObject(LevelObject levelobject)
         {
 
         }
@@ -188,6 +201,19 @@ namespace Top_Down_Shooter
             if (collision == false) ObjectPos += moveamount;
             else
             {
+                //First check if the tile we touched will block us or not
+                Tile tile = Level.TileEngine.CheckNextTile(FeetLoc, moveamount);
+
+                //Check if we touched a special tile
+                if (tile.TileType != Tile.TileTypes.None)
+                {
+                    TouchesTile(tile);
+
+                    //We touched a block tile, so block movement by exiting
+                    if (tile.TileType == Tile.TileTypes.Block)
+                        return;
+                }
+
                 //Check if we touched anything
                 LevelObject objtouched = Collided();
 
