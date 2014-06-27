@@ -24,7 +24,7 @@ namespace Top_Down_Shooter
             levelObjects = new List<LevelObject>();
 
             LevelKeyboard = new KeyboardState(Keys.Enter);
-            TileEngine = new TileEngine(new Vector2(800, 480));
+            TileEngine = new TileEngine(Main.ScreenSize);
         }
 
         public void AddObject(LevelObject levelobject)

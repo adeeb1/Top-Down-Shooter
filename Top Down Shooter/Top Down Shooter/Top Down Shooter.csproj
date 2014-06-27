@@ -162,6 +162,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <Content Include="Content\Graphics\guntest.png" />
+    <Content Include="Content\Graphics\mario.png" />
     <Content Include="Content\Graphics\MenuFont.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
