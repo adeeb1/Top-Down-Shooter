@@ -43,6 +43,7 @@ namespace Top_Down_Shooter
 
         public LevelObject()
         {
+            ObjectPos = Vector2.Zero;
             Dead = false;
         }
 

@@ -32,6 +32,16 @@ namespace Top_Down_Shooter
         {
             return (MouseState.RightButton == ButtonState.Pressed && Mouse.GetState().RightButton == ButtonState.Released);
         }
+        
+        public static int GetX(int X)
+        {
+            return ((int)((float)X * Main.ResolutionScaleFactor.X));
+        }
+
+        public static int GetY(int Y)
+        {
+            return ((int)((float)Y * Main.ResolutionScaleFactor.Y));
+        }
 
         public static bool IsMouseInRect(Rectangle Rect)
         {
@@ -39,7 +49,7 @@ namespace Top_Down_Shooter
             MouseState mouseState = Mouse.GetState();
 
             // Create a rectangle for the mouse on the screen
-            Rectangle MouseRect = new Rectangle(mouseState.X, mouseState.Y, 1, 1);
+            Rectangle MouseRect = new Rectangle(GetX(mouseState.X), GetY(mouseState.Y), 1, 1);
 
             // Return true if the mouse is within the Rectangle's bounds; otherwise, return false
             return MouseRect.Intersects(Rect);
@@ -65,10 +75,10 @@ namespace Top_Down_Shooter
             if (gesture.GestureType == GestureType.Tap)
             {
                 // Create a rectangle for the tap on the screen
-                Rectangle TapRect = new Rectangle((int)gesture.Position.X, (int)gesture.Position.Y, 1, 1);
+                Rectangle TapRect = new Rectangle(GetX((int)gesture.Position.X), GetY((int)gesture.Position.Y), 1, 1);
 
                 // Return true if the tap is within the Rectangle's bounds; otherwise, return false
-                return TapRect.Contains(gesture.Position);
+                return Rect.Intersects(TapRect);
             }
 
             // A tap gesture was not found, so return false

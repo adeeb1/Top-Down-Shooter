@@ -193,6 +193,8 @@ namespace Top_Down_Shooter
                 for (int i = 0; i < MenuOptions.Count; i++)
                 {
                     spriteBatch.Draw(LoadAssets.ScalableBox, GetOptionRect(i), null, Color.Green, 0f, Vector2.Zero, SpriteEffects.None, .999f);
+
+                    spriteBatch.DrawString(MenuFont, Input.GetX(mouseState.X).ToString() + " // " + Input.GetY(mouseState.Y).ToString(), Vector2.Zero, Color.White);
                 }
             }
         }
