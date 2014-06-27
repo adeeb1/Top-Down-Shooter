@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Top_Down_Shooter
 {
@@ -31,6 +32,11 @@ namespace Top_Down_Shooter
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            IsMouseVisible = true;
+
+            // Enable the tap gesture
+            TouchPanel.EnabledGestures = GestureType.Tap;
         }
 
         static Main()
@@ -47,7 +53,7 @@ namespace Top_Down_Shooter
         {
             // TODO: Add your initialization logic here
             base.Initialize();
-
+            
             Level = new BaseLevel();
             Level.AddObject(new Character1());
             Level.AddObject(new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80)));
