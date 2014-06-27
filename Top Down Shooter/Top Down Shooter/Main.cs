@@ -28,13 +28,32 @@ namespace Top_Down_Shooter
         // Keeps track of the current game state
         private GameState gameState;
 
+        // Screen size of the game
+        public static Vector2 ScreenSize;
+
+        // Half the screen size of the game
+        public static Vector2 ScreenHalf;
+
+        // The scale factor that converts actual screen coordinates to game screen coordinates
+        public static Vector2 ResolutionScaleFactor;
+        
         public Main()
         {
+            // Get the screen size
+            ScreenSize = new Vector2(800, 480);
+
+            // Get half the screen size
+            ScreenHalf = (ScreenSize / 2);
+            
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = (int)ScreenSize.X;
             graphics.PreferredBackBufferHeight = (int)ScreenSize.Y;
             Content.RootDirectory = "Content";
 
+            // Get the resolution scale factor
+            ResolutionScaleFactor = new Vector2((ScreenSize.X / Window.ClientBounds.Width), (ScreenSize.Y / Window.ClientBounds.Height));
+
+            // Show the mouse on the game screen
             IsMouseVisible = true;
 
             // Enable the tap gesture
@@ -44,16 +63,6 @@ namespace Top_Down_Shooter
         static Main()
         {
             activeTime = 0f;
-        }
-
-        static Vector2 ScreenSize
-        {
-            get { return new Vector2(800, 480); }
-        }
-
-        static Vector2 ScreenHalf
-        {
-            get { return ScreenSize / 2; }
         }
 
         protected override void OnDeactivated(object sender, System.EventArgs args)
@@ -78,6 +87,9 @@ namespace Top_Down_Shooter
             
             // Set the game state to indicate the player is viewing a screen
             gameState = GameState.Screen;
+
+            // Handle the ClientSizeChanged event for the game window
+            Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
         
         protected override void LoadContent()
@@ -211,5 +223,17 @@ namespace Top_Down_Shooter
 
             base.Draw(gameTime);
         }
+
+        private void Window_ClientSizeChanged(object sender, System.EventArgs e)
+        {
+            // Readjust the resolution scale factor based on the new screen resolution/size
+
+            // TODO: This is not perfect. It doesn't properly take into account the snapping of the game
+            // TODO: This is not perfect. It doesn't properly take into account the snapping of the game
+            // TODO: This is not perfect. It doesn't properly take into account the snapping of the game
+            ResolutionScaleFactor = new Vector2((ScreenSize.X / Window.ClientBounds.Width), (ScreenSize.Y / Window.ClientBounds.Height));
+        }
+
+
     }
 }
