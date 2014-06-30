@@ -29,6 +29,11 @@ namespace Top_Down_Shooter
             Health = 1;
         }
 
+        public override Powerup GetPowerup
+        {
+            get { return SourceGun.GunOwner.PowerUp; }
+        }
+
         public void SetProjectileProperties(Gun sourceGun, Vector2 position, Direction direction, Vector2 moveSpeed, float activeDelayTime)
         {
             // Store the gun that shot the projectile

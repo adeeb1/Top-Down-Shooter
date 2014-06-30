@@ -23,6 +23,9 @@ namespace Top_Down_Shooter
         //Level reference
         public BaseLevel Level;
 
+        //The powerup this object has
+        public Powerup PowerUp;
+
         // Object Position
         public Vector2 ObjectPos;
 
@@ -36,6 +39,7 @@ namespace Top_Down_Shooter
         public Hurtbox hurtbox;
 
         //Object health (not required to be used)
+        public int MaxHealth;
         public int Health;
 
         //Tells if the object is dead or not
@@ -45,6 +49,8 @@ namespace Top_Down_Shooter
         {
             ObjectPos = Vector2.Zero;
             Dead = false;
+
+            MaxHealth = 10;
         }
 
         //Get if the object is dead or not
@@ -66,7 +72,7 @@ namespace Top_Down_Shooter
         //The location of the object's "feet"; where the object has collision with tiles
         public Rectangle FeetLoc
         {
-            get { return new Rectangle((int)ObjectPos.X, (int)ObjectPos.Y - (ObjectTexture.Height / 2), ObjectTexture.Width, ObjectTexture.Height / 2); }
+            get { return new Rectangle((int)ObjectPos.X - (ObjectTexture.Width / 2), (int)ObjectPos.Y - (ObjectTexture.Height / 2), ObjectTexture.Width, ObjectTexture.Height / 2); }
         }
 
         //The origin of drawing the object: the bottom-middle of the sprite
@@ -98,11 +104,24 @@ namespace Top_Down_Shooter
             }
         }
 
+        public virtual Powerup GetPowerup
+        {
+            get { return PowerUp; }
+        }
+
+        //Heals the LevelObject for a certain amount
+        public virtual void Heal(int healamount)
+        {
+            Health += healamount;
+            if (Health > MaxHealth) Health = MaxHealth;
+        }
+
         //Calculates the total damage a hitbox deals when touching a hurtbox
         protected virtual int CalculateDamage(Hitbox hitbox)
         {
             //Ensure that we don't add health by obtaining a negative value if the hurtbox's Defense is higher than the hitbox's Damage
-            int totaldamage = hitbox.Damage - hurtbox.Defense;
+            //Take powerups into account
+            int totaldamage = (hitbox.Damage + hitbox.hitboxOwner.GetPowerup.AdditionalDamage()) - (hurtbox.Defense + hurtbox.hurtboxOwner.PowerUp.AdditionalDefense());
             if (totaldamage < 0) totaldamage = 0;
 
             return totaldamage;
@@ -117,7 +136,14 @@ namespace Top_Down_Shooter
             //No health remaining; the object should die
             if (Health <= 0)
             {
+                Health = 0;
                 Die();
+            }
+            //Disable Powerups that disappear on hit
+            else
+            {
+                //Deactivate a Powerup if it disappears on-hit
+                if (PowerUp.Duration == Powerup.HitlongDuration) PowerUp.Deactivate();
             }
         }
 
@@ -171,6 +197,8 @@ namespace Top_Down_Shooter
         protected virtual LevelObject Collided()
         {
             //Go through all the level objects
+            /*NOTE: To improve efficiency, have a separate list of objects that contains only LevelObjects with collision
+                    don't do this unless performance becomes an issue*/
             for (int i = 0; i < Level.levelObjects.Count; i++)
             {
                 //Don't check for collisions with itself
@@ -196,6 +224,8 @@ namespace Top_Down_Shooter
         }
 
         //Causes a level object to move; there is an option to move taking collision into account, which is set to true by default
+        //NOTE: We don't check collision while taking movement into account yet! All we do is check if the object collided with something 
+        //in its current position, THEN move! Change this!
         public virtual void Move(Vector2 moveamount, bool collision = true)
         {
             //No collision; simply move
@@ -219,6 +249,7 @@ namespace Top_Down_Shooter
                 LevelObject objtouched = Collided();
 
                 //We did, so do something and block movement
+                //NOTE: Change this to account for objects you do touch and can go through but don't actually hurt, such as Powerups
                 if (objtouched != null)
                 {
                     Touches(objtouched);
@@ -257,6 +288,12 @@ namespace Top_Down_Shooter
 
             if (Debug.HurtboxDraw == true && hurtbox != null)
                 hurtbox.Draw(spriteBatch);
+
+            if (Debug.FeetLocDraw == true)
+            {
+                Rectangle feetloc = FeetLoc;
+                spriteBatch.Draw(LoadAssets.ScalableBox, new Vector2(feetloc.X, feetloc.Y), null, Color.Yellow, 0f, Vector2.Zero, new Vector2(feetloc.Width, feetloc.Height), SpriteEffects.None, .999f);
+            }
         }
     }
 }

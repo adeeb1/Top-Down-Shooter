@@ -16,7 +16,7 @@ namespace Top_Down_Shooter
             Health = 20;
 
             PlayerGun = new MachineGun(ObjectPos, ObjectDir, int.MaxValue, int.MaxValue, 200);
-            hitbox = new Hitbox(this, Helper.CreateRect(ObjectPos, ObjectTexture.Width, ObjectTexture.Height), 0, 0, Hitbox.InfDuration);
+            hurtbox = new Hurtbox(this, Helper.CreateRect(ObjectPos, ObjectTexture.Width, ObjectTexture.Height), 0);
 
             PlayerGun.GunOwner = this;
         }

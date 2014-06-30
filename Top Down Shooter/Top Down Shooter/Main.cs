@@ -75,6 +75,7 @@ namespace Top_Down_Shooter
             Level = new BaseLevel();
             Level.AddObject(new Character1());
             Level.AddObject(new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80)));
+            Level.AddObject(new DamagePowerup(new Vector2(200, 100), 100, 5000f));
 
             // Create a new stack of MenuScreen objects
             MenuScreens = new Stack<MenuScreen>();
@@ -95,7 +96,7 @@ namespace Top_Down_Shooter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             LoadAssets.LoadContent(Content);
-            SoundManager.PlaySong(LoadAssets.TestSong);
+            //SoundManager.PlaySong(LoadAssets.TestSong);
         }
 
         protected override void UnloadContent()

@@ -14,7 +14,7 @@ namespace Top_Down_Shooter
     {
         public Enemy()
         {
-
+            PowerUp = Powerup.Default;
         }
 
         //Slightly reduce the depth so the player overlaps the enemy if they're in the same exact spot
