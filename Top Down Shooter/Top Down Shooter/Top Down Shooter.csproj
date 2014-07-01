@@ -148,6 +148,12 @@
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Menus\OptionScreen.cs" />
     <Compile Include="Menus\TitleScreen.cs" />
+    <Compile Include="Pickups\Pickup.cs" />
+    <Compile Include="Pickups\PowerUps\DamagePowerup.cs" />
+    <Compile Include="Pickups\PowerUps\DefaultPowerup.cs" />
+    <Compile Include="Pickups\PowerUps\DefensePowerup.cs" />
+    <Compile Include="Pickups\PowerUps\HealthPowerup.cs" />
+    <Compile Include="Pickups\PowerUps\Powerup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Projectiles\Projectile1.cs" />

@@ -94,8 +94,15 @@ namespace Top_Down_Shooter
                     //Otherwise update the object
                     else
                     {
+                        //Store the number of level objects
+                        int oldcount = levelObjects.Count;
+
                         //Update the object
                         levelObjects[i].Update();
+
+                        //Check if any objects were removed (Ex. collecting a Powerup) and decrease the index by that amount if so
+                        int countdifference = oldcount - levelObjects.Count;
+                        if (countdifference > 0) i -= countdifference;
                     }
                 }
             }

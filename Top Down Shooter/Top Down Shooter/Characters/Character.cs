@@ -27,6 +27,8 @@ namespace Top_Down_Shooter
             // Get the player's texture
             ObjectTexture = LoadAssets.CharTest;
 
+            PowerUp = Powerup.Default;
+
             // Create a new keyboard state
             keyboardState = new KeyboardState();
         }
@@ -81,7 +83,7 @@ namespace Top_Down_Shooter
                 ObjectDir = PlayerGun.ObjectDir = Direction.Down;
             }
 
-            Move(totalmovement);
+            if (totalmovement != Vector2.Zero) Move(totalmovement);
         }
 
         public void ShootGun()
@@ -118,8 +120,21 @@ namespace Top_Down_Shooter
                 SoundManager.PlaySound(LoadAssets.TestSound);
             }
 
+            //Update the player's Powerup
+            UpdatePowerup();
+
             // Update the keyboard state with the global state
             keyboardState = Keyboard.GetState();
+        }
+
+        protected void UpdatePowerup()
+        {
+            if (PowerUp.PowerupType != Powerup.Powerups.None)
+            {
+                PowerUp.Update();
+                if (PowerUp.PowerupDone == true)
+                    PowerUp.Deactivate();
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
