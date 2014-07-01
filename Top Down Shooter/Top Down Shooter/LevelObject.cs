@@ -154,6 +154,11 @@ namespace Top_Down_Shooter
             Dead = true;
         }
 
+        public virtual bool HasCollision
+        {
+            get { return false; }
+        }
+
         //Interface defaults; override them in the derived classes
         public virtual bool TouchedX(Rectangle boundingbox)
         {
@@ -194,27 +199,27 @@ namespace Top_Down_Shooter
 
         //Checks if the level object is about to collide with another level object
         //It returns the first LevelObject that is touched
-        protected virtual LevelObject Collided()
+        protected virtual LevelObject Collided(Rectangle boundingbox)
         {
             //Go through all the level objects
-            /*NOTE: To improve efficiency, have a separate list of objects that contains only LevelObjects with collision
-                    don't do this unless performance becomes an issue*/
+            /*To improve efficiency, have a separate list of objects that contains only LevelObjects with collision don't do this 
+              unless performance becomes an issue*/
             for (int i = 0; i < Level.levelObjects.Count; i++)
             {
-                //Don't check for collisions with itself
-                if (this != Level.levelObjects[i])
+                //Don't check for collisions with itself or if the object doesn't have a hurtbox
+                if (this != Level.levelObjects[i] && Level.levelObjects[i].hurtbox != null)
                 {
                     //If X speed is 0, don't bother checking
                     if (MoveSpeed.X != 0f)
                     {
-                        if (Level.levelObjects[i].TouchedX(BoundingBox) == true)
+                        if (Level.levelObjects[i].TouchedX(boundingbox) == true)
                             return Level.levelObjects[i];
                     }
 
                     //If Y speed is 0, don't bother checking
                     if (MoveSpeed.Y != 0f)
                     {
-                        if (Level.levelObjects[i].TouchedY(BoundingBox) == true)
+                        if (Level.levelObjects[i].TouchedY(boundingbox) == true)
                             return Level.levelObjects[i];
                     }
                 }
@@ -223,30 +228,42 @@ namespace Top_Down_Shooter
             return null;
         }
 
-        //Causes a level object to move; there is an option to move taking collision into account, which is set to true by default
-        //NOTE: We don't check collision while taking movement into account yet! All we do is check if the object collided with something 
-        //in its current position, THEN move! Change this!
-        public virtual void Move(Vector2 moveamount, bool collision = true)
+        //Move in increments
+        protected void MoveIncrements(int maxmove, Vector2 increment, int inc)
         {
-            //No collision; simply move
-            if (collision == false) ObjectPos += moveamount;
-            else
+            for (int move = 0; move != maxmove; move += inc)
             {
-                //First check if the tile we touched will block us or not
-                Tile tile = Level.TileEngine.CheckNextTile(FeetLoc, moveamount);
+                //First check if the tilea we touched will block us or not
+                List<Tile> tiles = Level.TileEngine.CheckCollidingTiles(FeetLoc, increment);
 
-                //Check if we touched a special tile
-                if (tile.TileType != Tile.TileTypes.None)
+                bool blocktile = false;
+
+                //Go through all the tiles and touch them
+                for (int i = 0; i < tiles.Count; i++)
                 {
-                    TouchesTile(tile);
+                    //Check if we touched a special tile
+                    if (tiles[i].TileType != Tile.TileTypes.None)
+                    {
+                        TouchesTile(tiles[i]);
 
-                    //We touched a block tile, so block movement by exiting
-                    if (tile.TileType == Tile.TileTypes.Block)
-                        return;
+                        //We touched a block tile; track it and continue
+                        /*NOTE: This causes a slight oddity in that if there was a tile type that reacted to you moving onto it and didn't track who
+                                touched it, it will activate again even if you didn't actually move anywhere*/
+                        if (tiles[i].TileType == Tile.TileTypes.Block)
+                            blocktile = true;
+                    }
                 }
 
+                //We touched a block tile, so exit
+                if (blocktile == true) return;
+
+                //Update the bounding box
+                Rectangle boundingbox = BoundingBox;
+                boundingbox.X += (int)increment.X;
+                boundingbox.Y += (int)increment.Y;
+
                 //Check if we touched anything
-                LevelObject objtouched = Collided();
+                LevelObject objtouched = Collided(boundingbox);
 
                 //We did, so do something and block movement
                 //NOTE: Change this to account for objects you do touch and can go through but don't actually hurt, such as Powerups
@@ -254,9 +271,37 @@ namespace Top_Down_Shooter
                 {
                     Touches(objtouched);
                     objtouched.WhenTouched(this);
+
+                    //Block movement and end the loop if the object has collision, otherwise move and continue
+                    if (objtouched.HasCollision == true)
+                    {
+                        break;
+                    }
+                    else ObjectPos += increment;
                 }
                 //Otherwise move
-                else ObjectPos += moveamount;
+                else
+                {
+                    ObjectPos += increment;
+                    UpdateCollisionBoxes();
+                }
+            }
+        }
+
+        //Causes a level object to move; there is an option to move taking collision into account, which is set to true by default
+        public virtual void Move(Vector2 moveamount, bool collision = true)
+        {
+            //No collision; simply move
+            if (collision == false) ObjectPos += moveamount;
+            else
+            {
+                //See how much to move
+                int incx = moveamount.X < 0 ? -1 : 1;
+                int incy = moveamount.Y < 0 ? -1 : 1;
+
+                //Move in the X first, then the Y
+                MoveIncrements((int)moveamount.X, new Vector2(incx, 0), incx);
+                MoveIncrements((int)moveamount.Y, new Vector2(0, incy), incy);
             }
         }
 

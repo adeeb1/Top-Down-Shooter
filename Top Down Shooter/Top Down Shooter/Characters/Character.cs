@@ -83,7 +83,7 @@ namespace Top_Down_Shooter
                 ObjectDir = PlayerGun.ObjectDir = Direction.Down;
             }
 
-            Move(totalmovement);
+            if (totalmovement != Vector2.Zero) Move(totalmovement);
         }
 
         public void ShootGun()

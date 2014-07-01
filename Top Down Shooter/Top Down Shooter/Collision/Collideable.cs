@@ -10,6 +10,8 @@ namespace Top_Down_Shooter
     //An interface for objects that can block other objects
     public interface Collideable
     {
+        bool HasCollision { get; }
+
         //Checks if the object was touched in the X direction
         bool TouchedX(Rectangle boundingbox);
 

@@ -53,12 +53,49 @@ namespace Top_Down_Shooter
         //Checks for a tile in the direction the object is moving
         public Tile CheckNextTile(Rectangle feetloc, Vector2 velocity)
         {
-            Vector2 truefeetloc = new Vector2(feetloc.X, feetloc.Y);
+            Vector2 truefeetloc = new Vector2(feetloc.X + (int)velocity.X, feetloc.Y + (int)velocity.Y);
 
             if (velocity.X > 0) truefeetloc.X += feetloc.Width;
             if (velocity.Y > 0) truefeetloc.Y += feetloc.Height;
 
             return GetTile(truefeetloc);
+        }
+
+        //Checks for all the tiles an object is touching
+        public List<Tile> CheckCollidingTiles(Rectangle feetloc, Vector2 velocity)
+        {
+            feetloc.X += (int)velocity.X;
+            feetloc.Y += (int)velocity.Y;
+
+            //The list of tiles we touched
+            List<Tile> tilestouching = new List<Tile>();
+
+            int increasex = Tile.TileSize;
+
+            //Loop through the width of the feet rectangle, increasing by the tile size each time until hitting the right of the rectangle
+            for (int i = feetloc.X; ; i += increasex)
+            {
+                int increasey = Tile.TileSize;
+
+                //Loop through the height of the feet rectangle, increasing by the tile size each time until hitting the bottom of the rectangle
+                for (int j = feetloc.Y; ; j += increasey)
+                {
+                    //Check the tile at this location and see if it's in our tile list; if not, add it
+                    Tile tile = GetTile(new Vector2(i, j));
+                    if (tilestouching.Contains(tile) == false)
+                        tilestouching.Add(tile);
+
+                    //This is the bottom of the rectangle; break
+                    if (j == feetloc.Bottom) break;
+                    else if ((j + Tile.TileSize) > feetloc.Bottom) increasey = (feetloc.Bottom - j);
+                }
+
+                //This is the right of the rectangle; break
+                if (i == feetloc.Right) break;
+                else if ((i + Tile.TileSize) > feetloc.Right) increasex = (feetloc.Right - i);
+            }
+
+            return tilestouching;
         }
 
         public void Draw(SpriteBatch spriteBatch)
