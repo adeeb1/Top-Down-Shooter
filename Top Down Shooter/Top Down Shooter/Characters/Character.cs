@@ -15,7 +15,7 @@ namespace Top_Down_Shooter
     {
         // Represents the gun the character is currently holding (may need to be a list or an array later for multiple guns)
         public Gun PlayerGun;
-        
+
         // Keyboard state
         public KeyboardState keyboardState;
 
@@ -28,6 +28,8 @@ namespace Top_Down_Shooter
             ObjectTexture = LoadAssets.CharTest;
 
             PowerUp = Powerup.Default;
+
+            MaxHealth = 100;
 
             // Create a new keyboard state
             keyboardState = new KeyboardState();

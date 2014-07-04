@@ -146,6 +146,7 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Collision\Hitbox.cs" />
     <Compile Include="Collision\Hurtbox.cs" />
+    <Compile Include="HUD.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="LevelObject.cs" />
     <Compile Include="Levels\BaseLevel.cs" />

@@ -15,6 +15,9 @@ namespace Top_Down_Shooter
     {
         private KeyboardState LevelKeyboard;
         public List<LevelObject> levelObjects;
+        
+        //The player reference
+        public Character Player;
 
         //The level's tile engine
         public TileEngine TileEngine;
@@ -34,6 +37,12 @@ namespace Top_Down_Shooter
                 levelobject.Level = this;
                 levelObjects.Add(levelobject);
             }
+        }
+
+        public void AddPlayer(Character player)
+        {
+            Player = player;
+            AddObject(Player);
         }
 
         private void HitboxCollision(int index)
@@ -68,12 +77,12 @@ namespace Top_Down_Shooter
             //Check for pausing/unpausing the game
             if (Input.IsKeyDown(LevelKeyboard, Keys.Enter) == true)
             {
-                if (main.GetGameState == GameState.InGame)
+                if (main.GameState == GameState.InGame)
                     main.ChangeGameState(GameState.Paused);
                 else main.ChangeGameState(GameState.InGame);
             }
 
-            if (main.GetGameState == GameState.InGame)
+            if (main.GameState == GameState.InGame)
             {
                 //Update all level objects
                 for (int i = 0; i < levelObjects.Count; i++)

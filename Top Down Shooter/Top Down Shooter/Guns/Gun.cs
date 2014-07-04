@@ -21,7 +21,8 @@ namespace Top_Down_Shooter
         public int MaxAmmo;
 
         // Stores the ammo left for the gun
-        public int AmmoLeft;
+        public int AmmoLeft
+        { get; set; }
 
         // Delay time between shots
         public float ShootDelayTime;

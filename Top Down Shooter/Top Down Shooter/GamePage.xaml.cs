@@ -6,6 +6,7 @@ using MonoGame.Framework;
 using Windows.ApplicationModel.Activation;
 using Windows.System;
 using Windows.Foundation;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Microsoft.Xna.Framework;
 
@@ -30,10 +31,11 @@ namespace Top_Down_Shooter
         {
             // Create a new Title Screen
             TitleScreen screen = new TitleScreen(_game.GamePage, _game);
-
+            
             // Add the Title Screen to the MenuScreens Stack
             _game.AddScreen(screen);
         }
+
 
     }
 }
