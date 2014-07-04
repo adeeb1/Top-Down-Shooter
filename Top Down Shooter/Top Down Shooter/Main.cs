@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using Windows.UI.Core;
 
 namespace Top_Down_Shooter
 {
@@ -12,6 +14,9 @@ namespace Top_Down_Shooter
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+
+        // Reference to GamePage.xaml
+        public GamePage GamePage;
 
         //Time the game is active
         public static float activeTime;
@@ -80,11 +85,11 @@ namespace Top_Down_Shooter
             // Create a new stack of MenuScreen objects
             MenuScreens = new Stack<MenuScreen>();
             
-            // Add the Title Screen to the MenuScreen
-            AddScreen(new TitleScreen());
-            
             // Set the game state to indicate the player is viewing a screen
             gameState = GameState.Screen;
+
+            // Handle the KeyDown event for the game window
+            Windows.UI.Xaml.Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
 
             // Handle the ClientSizeChanged event for the game window
             Window.ClientSizeChanged += Window_ClientSizeChanged;
@@ -96,7 +101,7 @@ namespace Top_Down_Shooter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             LoadAssets.LoadContent(Content);
-            //SoundManager.PlaySong(LoadAssets.TestSong);
+            SoundManager.PlaySong(LoadAssets.TestSong);
         }
 
         protected override void UnloadContent()
@@ -109,9 +114,18 @@ namespace Top_Down_Shooter
             get { return gameState; }
         }
 
+        private void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs e)
+        {
+            if (MenuScreens.Count > 0)
+            {
+                GetCurrentScreen().CursorMove(e);
+            }
+        }
+
         public void AddScreen(MenuScreen screen)
         {
             MenuScreens.Push(screen);
+            screen.ShowScreen();
         }
 
         public MenuScreen GetCurrentScreen()
@@ -131,8 +145,13 @@ namespace Top_Down_Shooter
                 // Check if the current screen exists
                 if (GetCurrentScreen() != null)
                 {
-                    // Reset the input of the current screen
-                    MenuScreens.Peek().ResetInput();
+                    // Show the current screen
+                    MenuScreens.Peek().ShowScreen();
+                }
+                else // No screen exists
+                {
+                    // Clear all of the children from the Canvas
+                    GamePage.CurrentScreen.Children.Clear();
                 }
             }
         }
@@ -152,7 +171,7 @@ namespace Top_Down_Shooter
             switch (gameState)
             {
                 case GameState.Screen: // Update the current screen
-                    GetCurrentScreen().Update(this);
+                    //GetCurrentScreen().Update(this);
 
                     break;
                 case GameState.InGame: // Update the in-game objects
@@ -188,7 +207,7 @@ namespace Top_Down_Shooter
             switch (gameState)
             {
                 case GameState.Screen: // Draw the current screen
-                    GetCurrentScreen().Draw(spriteBatch);
+                    //GetCurrentScreen().Draw(spriteBatch);
                     
                     break;
                 case GameState.InGame: // Draw the in-game objects

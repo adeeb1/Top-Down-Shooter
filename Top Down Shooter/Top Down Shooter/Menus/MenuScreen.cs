@@ -3,199 +3,212 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoGame.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Input.Touch;
+using Windows.System;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Top_Down_Shooter
 {
-    //Base menu screen class
-    public abstract class MenuScreen
+    public class MenuScreen
     {
-        // Stores the list of menu options on the screen
-        public List<String> MenuOptions;
+        // All of the controls on the menu
+        public List<UIElement> AllControls;
 
-        // Stores the position of each menu option on the screen
-        public List<Vector2> OptionPositions;
+        // All of the controls on the menu that are menu options
+        public List<UIElement> MenuOptions;
 
-        // Stores the option the user is currently positioned on
+        // The cursor
+        public Image Cursor;
+
+        // The amount to offset the cursor from the menu options
+        public Vector2 CursorOffset;
+
+        // The option the player currently has selected
         public int SelectedOption;
 
-        // Stores the texture for the user's cursor
-        public Texture2D CursorTexture;
+        // The position of the cursor on the menu
+        public Vector2 CursorPos;
 
-        // Stores the X distance of the cursor from the menu option (the Y position should be the same as the menu option) 
-        public int CursorXDiff;
-
-        // The font of each menu
-        public SpriteFont MenuFont;
-
-        // Keyboard state
-        public KeyboardState keyboardState;
-
-        // Mouse state
-        public MouseState mouseState;
-
-        // Touch state
-        public TouchPanelState touchState;
+        // References to GamePage.xaml and Main.cs
+        public readonly GamePage GamePage;
+        public readonly Main Game;
 
         public MenuScreen()
         {
-            MenuOptions = new List<String>();
-            OptionPositions = new List<Vector2>();
+            // Initialize the AllControls list
+            AllControls = new List<UIElement>();
 
-            CursorTexture = LoadAssets.CursorTexture;
-            CursorXDiff = 50;
+            // Initialize the MenuOptions list
+            MenuOptions = new List<UIElement>();
 
-            MenuFont = LoadAssets.MenuFont;
+            // Create a cursor for the menu
+            CreateCursor();
 
-            // Reset the user's input
-            ResetInput();
+            // Automatically add the Cursor to the AllControls list
+            AllControls.Add(Cursor);
         }
 
-        public void ResetInput()
+        public MenuScreen(GamePage page, Main game) : this()
         {
-            // Create a new keyboard state with the Enter, Up, Down, Left, and Right keys already pressed
-            keyboardState = new KeyboardState(Keys.Enter, Keys.Up, Keys.Down, Keys.Left, Keys.Right);
+            // Store a reference to both GamePage.xaml and Main.cs, respectively
+            GamePage = page;
+            Game = game;
         }
 
-        // Method for moving the cursor
-        protected virtual void CursorMove()
+        private void CreateCursor()
+        {
+            // Create a new Image control to represent the cursor
+            Cursor = new Image();
+
+            // Get the image for the cursor
+            Cursor.Source = new BitmapImage(new Uri("ms-appx:/Content/Graphics/cursor.png"));
+
+            // Set the Width and Height of the Cursor Image
+            Cursor.Width = 32;
+            Cursor.Height = 32;
+        }
+
+        public void CursorMove(KeyEventArgs e)
         {
             // Get the index value of the last item in the MenuOptions list
             int LastMenuOption = (MenuOptions.Count - 1);
 
-            // Check if the player moved the selection cursor left
-            if (Input.IsKeyDown(keyboardState, Keys.Left) == true)
-            {
-                // Change the setting by -1
-                ChangeOption(-1);
-            }
-            // Check if the player moved the selection cursor right
-            if (Input.IsKeyDown(keyboardState, Keys.Right) == true)
-            {
-                // Change the setting by 1
-                ChangeOption(1);
-            }
             // Check if the player moved the selection cursor up
-            if (Input.IsKeyDown(keyboardState, Keys.Up) == true && SelectedOption > 0)
+            if (e.VirtualKey == VirtualKey.Up && SelectedOption > 0)
             {
                 SelectedOption -= 1;
+                SetCursorPosition();
             }
             // Check if the player moved the selection cursor down
-            if (Input.IsKeyDown(keyboardState, Keys.Down) == true && SelectedOption < LastMenuOption)
+            if (e.VirtualKey == VirtualKey.Down && SelectedOption < LastMenuOption)
             {
                 SelectedOption += 1;
+                SetCursorPosition();
             }
-        }
-
-        // Method for automatically moving the selected option based on the mouse position
-        protected virtual void MouseMove()
-        {
-            // Loop through all of the menu options
-            for (int i = 0; i < MenuOptions.Count; i++)
+            // Check if the player pressed the "Enter" key
+            if (e.VirtualKey == VirtualKey.Enter)
             {
-                // Check if the mouse is within the bounds of the option's rectangle
-                if (Input.IsMouseInRect(GetOptionRect(i)) == true)
-                {
-                    // Set the selected option to the current option in the loop
-                    SelectedOption = i;
-
-                    // Break out of the loop
-                    break;
-                }
+                PickOption();
             }
         }
 
-        protected virtual void TouchSelect(Main main)
+        private void SetElementPosition(UIElement element, Vector2 Position)
         {
-            // Loop through all of the menu options
-            for (int i = 0; i < MenuOptions.Count; i++)
-            {
-                // Check if the mouse is within the bounds of the option's rectangle
-                if (Input.IsTapInRect(GetOptionRect(i)) == true)
-                {
-                    // Set the selected option to the current option in the loop
-                    SelectedOption = i;
-
-                    // Try to pick the option immediately
-                    PickOption(main);
-
-                    // Break out of the loop
-                    break;
-                }
-            }
+            // Set the Left and Top properties of the element in the Canvas
+            element.SetValue(Canvas.LeftProperty, Position.X);
+            element.SetValue(Canvas.TopProperty, Position.Y);
         }
 
-        protected virtual void PickOption(Main main)
+        public void SetCursorPosition()
+        {
+            // Get the X and Y position at which the Cursor should be displayed in the canvas
+            float x = (float)((double)MenuOptions[SelectedOption].GetValue(Canvas.LeftProperty));
+            float y = (float)((double)MenuOptions[SelectedOption].GetValue(Canvas.TopProperty));
+            
+            // Get the new cursor position. Subtract the CursorOffset by the generated position
+            CursorPos = (new Vector2(x, y) - CursorOffset);
+            
+            // Set the position of the Cursor
+            SetElementPosition(Cursor, CursorPos);
+        }
+
+        protected Style GetStyle(String StyleName)
+        {
+            // Return the XAML Style with the specified name. null will be returned if the Style is not found
+            return (Application.Current.Resources[StyleName] as Style);
+        }
+
+        protected TextBlock CreateLabel(String Text, Vector2 Position)
+        {
+            // Create a new TextBlock
+            TextBlock txtBlock = new TextBlock();
+
+            // Set the TextBlock's Style
+            txtBlock.Style = GetStyle("TextBlockStyle");
+
+            // Set the TextBlock's Text
+            txtBlock.Text = Text;
+
+            // Set the TextBlock's position
+            SetElementPosition(txtBlock, Position);
+
+            // Return the TextBlock
+            return txtBlock;
+        }
+
+        protected ComboBox CreateDropdown(Vector2 Position)
+        {
+            // Create a new ComboBox
+            ComboBox cmbBox = new ComboBox();
+
+            // Set the ComboBox's Style
+            cmbBox.Style = GetStyle("ComboBoxStyle");
+
+            // Add items to the ComboBox
+            AddDropdownItems(cmbBox);
+
+            // Set the ComboBox's SelectedIndex to 0 by default
+            if (cmbBox.Items.Count > 0) cmbBox.SelectedIndex = 0;
+
+            // Set the ComboBox's position
+            SetElementPosition(cmbBox, Position);
+
+            // Return the ComboBox
+            return cmbBox;
+        }
+
+        protected virtual void AddDropdownItems(ComboBox Dropdown)
+        {
+            // Nothing in the base class
+        }
+
+        protected void AddMenuOption(UIElement element)
+        {
+            // Add the Tapped and PointerEntered events to the element
+            element.Tapped += MenuOption_Tapped;
+            element.PointerEntered += MenuOption_MouseOver;
+
+            // Add the menu option
+            MenuOptions.Add(element);
+        }
+
+        protected void MenuOption_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            // Set the SelectedOption to the tapped MenuOption
+            SelectedOption = MenuOptions.IndexOf((UIElement)sender);
+            SetCursorPosition();
+
+            // Try to pick the option
+            PickOption();
+        }
+
+        protected void MenuOption_MouseOver(object sender, PointerRoutedEventArgs e)
+        {
+            // Set the SelectedOption to the tapped MenuOption
+            SelectedOption = MenuOptions.IndexOf((UIElement)sender);
+            SetCursorPosition();
+        }
+
+        protected virtual void PickOption()
         {
             // Nothing here for the base class
         }
 
-        // Occurs when the user changes an option by pressing the Left or Right arrow keys
-        protected virtual void ChangeOption(int change)
+        public void ShowScreen()
         {
-            // Nothing here for the base class
-        }
-
-        protected Rectangle GetOptionRect(int OptionIndex)
-        {
-            // Measure the menu option
-            Vector2 OptionLength = MenuFont.MeasureString(MenuOptions[OptionIndex]);
-
-            // Create a new rectangle
-            return new Rectangle((int)OptionPositions[OptionIndex].X, (int)OptionPositions[OptionIndex].Y,
-                                 (int)OptionLength.X, (int)OptionLength.Y);
-        }
-
-        public virtual void Update(Main main)
-        {
-            touchState = TouchPanel.GetState(main.Window);
-
-            // Move the cursor if possible
-            CursorMove();
-
-            // If the player moves the mouse, select the option that is at the mouse position
-            MouseMove();
-
-            // If the player taps on the screen, select the option at the touch position and pick it immediately after
-            TouchSelect(main);
-
-            // Check if the user pressed the "Enter" key or pressed the left mouse button
-            if (Input.IsKeyDown(keyboardState, Keys.Enter) || (Input.IsLeftMouseButtonDown(mouseState) && Input.IsMouseInRect(GetOptionRect(SelectedOption))))
-            {
-                // Pick the selected option
-                PickOption(main);
-            }
-
-            // Update the keyboard, mouse, and touch states with the global state
-            keyboardState = Keyboard.GetState();
-            mouseState = Mouse.GetState();
-            touchState = TouchPanel.GetState(main.Window);
-        }
-
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            // Get the selected option
-            Vector2 TheOption = OptionPositions[SelectedOption];
+            // Clear all of the children from the Canvas
+            GamePage.CurrentScreen.Children.Clear();
             
-            for (int i = 0; i < MenuOptions.Count; i++)
+            // Loop through all of the controls on the menu
+            for (int i = 0; i < AllControls.Count; i++)
             {
-                spriteBatch.DrawString(MenuFont, MenuOptions[i], OptionPositions[i], Color.Black);
-            }
-            
-            spriteBatch.Draw(CursorTexture, new Rectangle((int)(TheOption.X - CursorXDiff), (int)TheOption.Y, CursorTexture.Width, CursorTexture.Height), Color.White);
-
-            if (Debug.OptionRectDraw == true)
-            {
-                for (int i = 0; i < MenuOptions.Count; i++)
-                {
-                    spriteBatch.Draw(LoadAssets.ScalableBox, GetOptionRect(i), null, Color.Green, 0f, Vector2.Zero, SpriteEffects.None, .999f);
-
-                    spriteBatch.DrawString(MenuFont, Input.GetX(mouseState.X).ToString() + " // " + Input.GetY(mouseState.Y).ToString(), Vector2.Zero, Color.White);
-                }
+                // Add each control to the Canvas
+                GamePage.CurrentScreen.Children.Add(AllControls[i]);
             }
         }
 
