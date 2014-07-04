@@ -50,6 +50,7 @@ namespace Top_Down_Shooter
             ObjectPos = objectpos;
 
             hurtbox = new Hurtbox(this, Helper.CreateRect(ObjectPos, ObjectTexture.Width, ObjectTexture.Height), 0);
+            hurtbox.SetInvincibility(Hurtbox.InfInvincibility);
         }
 
         //Default Powerup

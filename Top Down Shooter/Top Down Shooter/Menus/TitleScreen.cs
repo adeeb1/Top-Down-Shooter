@@ -4,32 +4,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace Top_Down_Shooter
 {
-    // Title screen class
     public class TitleScreen : MenuScreen
     {
-        public TitleScreen()
+        public TitleScreen(GamePage page, Main game) : base(page, game)
         {
-            MenuOptions.Add("Start Game");
-            MenuOptions.Add("Options");
+            CursorOffset = new Vector2(40, 0);
+
+            TextBlock StartGame = CreateLabel("Start Game", new Vector2(50, 50));
+            TextBlock Options = CreateLabel("Options", new Vector2(50, 100));
+            TextBlock Quit = CreateLabel("Quit", new Vector2(50, 150));
+
+            AllControls.Add(StartGame);
+            AllControls.Add(Options);
+            AllControls.Add(Quit);
+
+            AddMenuOption(StartGame);
+            AddMenuOption(Options);
+            AddMenuOption(Quit);
             
-            OptionPositions.Add(new Vector2(50, 50));
-            OptionPositions.Add(new Vector2(50, 100));
+            SetCursorPosition();
         }
 
-        protected override void PickOption(Main main)
+        protected override void PickOption()
         {
             switch (SelectedOption)
             {
                 case 0: // Start Game
                     // Start the game
-                    main.ChangeGameState(GameState.InGame);
+                    Game.RemoveScreen();
+                    Game.ChangeGameState(GameState.InGame);
                     break;
                 case 1: // Options
-                    main.AddScreen(new OptionScreen());
+                    Game.AddScreen(new OptionsScreen(GamePage, Game));
+                    break;
+                case 2: // Quit
+                    Game.Exit();
+                    Application.Current.Exit();
                     break;
             }
         }

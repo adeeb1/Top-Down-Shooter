@@ -9,6 +9,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Top_Down_Shooter
 {
+    // TODO: THE PLAYER'S OWN PROJECTILES CAN HIT HIMSELF - FIX!!!
+    // TODO: THE PLAYER'S OWN PROJECTILES CAN HIT HIMSELF - FIX!!!
+    // TODO: THE PLAYER'S OWN PROJECTILES CAN HIT HIMSELF - FIX!!!
     public class Projectile : LevelObject
     {
         // Stores a reference to the Gun the shot the projectile
