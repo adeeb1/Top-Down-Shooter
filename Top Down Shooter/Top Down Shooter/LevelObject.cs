@@ -91,7 +91,7 @@ namespace Top_Down_Shooter
         //Objects lower on the screen will be drawn over objects above
         protected virtual float SetDrawDepth()
         {
-            return (ObjectPos.Y / 1000f);
+            return ((ObjectPos.Y - Level.LevelCam.CameraLocation.Y) / 1000f);
         }
 
         //The location of the object, including its ObjectOrigin
@@ -104,9 +104,16 @@ namespace Top_Down_Shooter
             }
         }
 
+        //The Powerup the LevelObject has
         public virtual Powerup GetPowerup
         {
             get { return PowerUp; }
+        }
+
+        //The owner of the collision check; for projectiles, this is the object that shot the bullets
+        public virtual LevelObject CollisionOwner
+        {
+            get { return this; }
         }
 
         //Heals the LevelObject for a certain amount
@@ -320,7 +327,7 @@ namespace Top_Down_Shooter
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (ObjectTexture != null)
-                spriteBatch.Draw(ObjectTexture, ObjectPos, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+                spriteBatch.Draw(ObjectTexture, ObjectPos - Level.LevelCam.CameraLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
 
             //Draw debug info
             DebugDraw(spriteBatch);
@@ -337,7 +344,7 @@ namespace Top_Down_Shooter
             if (Debug.FeetLocDraw == true)
             {
                 Rectangle feetloc = FeetLoc;
-                spriteBatch.Draw(LoadAssets.ScalableBox, new Vector2(feetloc.X, feetloc.Y), null, Color.Yellow, 0f, Vector2.Zero, new Vector2(feetloc.Width, feetloc.Height), SpriteEffects.None, .999f);
+                spriteBatch.Draw(LoadAssets.ScalableBox, new Vector2(feetloc.X, feetloc.Y) - Level.LevelCam.CameraLocation, null, Color.Yellow, 0f, Vector2.Zero, new Vector2(feetloc.Width, feetloc.Height), SpriteEffects.None, .999f);
             }
         }
     }

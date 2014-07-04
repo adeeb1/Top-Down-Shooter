@@ -49,9 +49,29 @@ namespace Top_Down_Shooter
             get { return new Vector2(IndexX * TileSize, IndexY * TileSize); }
         }
 
-        public Vector2 TileCenter
+        public Vector2 Center
         {
             get { return TileLocation + new Vector2(TileSize / 2); }
+        }
+
+        public int Left
+        {
+            get { return (int)TileLocation.X; }
+        }
+
+        public int Right
+        {
+            get { return ((int)TileLocation.X + TileSize); }
+        }
+
+        public int Top
+        {
+            get { return (int)TileLocation.Y; }
+        }
+
+        public int Bottom
+        {
+            get { return ((int)TileLocation.Y + TileSize); }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -78,7 +98,7 @@ namespace Top_Down_Shooter
             }
 
             Vector2 stringsize = LoadAssets.MenuFont.MeasureString(text) * .5f;
-            spriteBatch.DrawString(LoadAssets.MenuFont, text, TileCenter, color, 0f, new Vector2(stringsize.X / 2, stringsize.Y / 2), .5f, SpriteEffects.None, .998f);
+            spriteBatch.DrawString(LoadAssets.MenuFont, text, Center, color, 0f, new Vector2(stringsize.X / 2, stringsize.Y / 2), .5f, SpriteEffects.None, .998f);
         }
     }
 }

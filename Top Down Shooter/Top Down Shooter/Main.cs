@@ -78,7 +78,7 @@ namespace Top_Down_Shooter
             base.Initialize();
             
             Level = new BaseLevel();
-            Level.AddObject(new Character1());
+            Level.AddPlayer(new Character1());
             Level.AddObject(new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80)));
             Level.AddObject(new DamagePowerup(new Vector2(200, 100), 100, 5000f));
 

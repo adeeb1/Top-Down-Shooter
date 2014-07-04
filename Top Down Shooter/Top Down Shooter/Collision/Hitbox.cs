@@ -89,7 +89,7 @@ namespace Top_Down_Shooter
         //Draw the hitbox (debug info only)
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(LoadAssets.ScalableBox, new Vector2(Bounds.X, Bounds.Y), null, Color.Red, 0f, Vector2.Zero, new Vector2(Bounds.Width, Bounds.Height), SpriteEffects.None, .999f);
+            spriteBatch.Draw(LoadAssets.ScalableBox, new Vector2(Bounds.X, Bounds.Y) - hitboxOwner.Level.LevelCam.CameraLocation, null, Color.Red, 0f, Vector2.Zero, new Vector2(Bounds.Width, Bounds.Height), SpriteEffects.None, .999f);
         }
     }
 }
