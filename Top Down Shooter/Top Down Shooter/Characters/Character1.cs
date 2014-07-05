@@ -11,11 +11,12 @@ namespace Top_Down_Shooter
     {
         public Character1()
         {
-            MoveSpeed = new Vector2(5, 5);
+            MoveSpeed = new Vector2(3, 3);
 
-            Health = 20;
+            Health = 100;
 
-            PlayerGun = new MachineGun(ObjectPos, ObjectDir, int.MaxValue, int.MaxValue, 200);
+            PlayerGun = new MachineGun(ObjectPos, ObjectDir, 100, 100, 200);
+
             hurtbox = new Hurtbox(this, Helper.CreateRect(ObjectPos, ObjectTexture.Width, ObjectTexture.Height), 0);
 
             PlayerGun.GunOwner = this;

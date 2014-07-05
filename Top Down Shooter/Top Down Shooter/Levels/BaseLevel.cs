@@ -15,6 +15,15 @@ namespace Top_Down_Shooter
     {
         private KeyboardState LevelKeyboard;
         public List<LevelObject> levelObjects;
+        
+        //The player reference
+        public Character Player;
+
+        //The camera for the level
+        public Camera LevelCam;
+
+        //The player reference
+        public Character Player;
 
         //The level's tile engine
         public TileEngine TileEngine;
@@ -24,7 +33,8 @@ namespace Top_Down_Shooter
             levelObjects = new List<LevelObject>();
 
             LevelKeyboard = new KeyboardState(Keys.Enter);
-            TileEngine = new TileEngine(Main.ScreenSize);
+            TileEngine = new TileEngine(Main.ScreenSize * 2);
+            LevelCam = new Camera(this);
         }
 
         public void AddObject(LevelObject levelobject)
@@ -36,6 +46,12 @@ namespace Top_Down_Shooter
             }
         }
 
+        public void AddPlayer(Character player)
+        {
+            Player = player;
+            AddObject(Player);
+        }
+
         private void HitboxCollision(int index)
         {
             LevelObject victim = levelObjects[index];
@@ -43,11 +59,11 @@ namespace Top_Down_Shooter
             //Check for collisions
             for (int i = 0; i < levelObjects.Count; i++)
             {
-                //An object can't hit itself, so don't bother checking for that
-                if (i != index)
-                {
-                    LevelObject attacker = levelObjects[i];
+                LevelObject attacker = levelObjects[i];
 
+                //An object can't hit itself, so don't bother checking for that
+                if (i != index && attacker.CollisionOwner != victim)
+                {
                     //If an object has a hitbox and touched the hurtbox of the object we're checking for, make that object take damage
                     if (attacker.hitbox != null && attacker.hitbox.CanHitObject(victim.hurtbox) == true)
                     {
@@ -68,12 +84,12 @@ namespace Top_Down_Shooter
             //Check for pausing/unpausing the game
             if (Input.IsKeyDown(LevelKeyboard, Keys.Enter) == true)
             {
-                if (main.GetGameState == GameState.InGame)
+                if (main.GameState == GameState.InGame)
                     main.ChangeGameState(GameState.Paused);
                 else main.ChangeGameState(GameState.InGame);
             }
 
-            if (main.GetGameState == GameState.InGame)
+            if (main.GameState == GameState.InGame)
             {
                 //Update all level objects
                 for (int i = 0; i < levelObjects.Count; i++)
@@ -107,6 +123,7 @@ namespace Top_Down_Shooter
                 }
             }
 
+            LevelCam.Update();
             LevelKeyboard = Keyboard.GetState();
         }
 

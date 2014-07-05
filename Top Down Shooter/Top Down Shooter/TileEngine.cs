@@ -39,9 +39,33 @@ namespace Top_Down_Shooter
         {
             get 
             {
-                if (x > 0 && y > 0 && x < Tiles.Length && y < Tiles[x].Length) return Tiles[x][y];
+                if (x >= 0 && y >= 0 && x < Tiles.Length && y < Tiles[x].Length) return Tiles[x][y];
                 else return new Tile();
             }
+        }
+
+        //The minimum tile in the X direction
+        public int MinTilesX
+        {
+            get { return 0; }
+        }
+
+        //The maximum tile in the X direction
+        public int MaxTilesX
+        {
+            get { return Tiles.Length - 1; }
+        }
+
+        //The minimum tile in the Y direction
+        public int MinTilesY
+        {
+            get { return 0; }
+        }
+
+        //The maximum tile in the Y direction
+        public int MaxTilesY
+        {
+            get { return Tiles[0].Length - 1; }
         }
 
         //Gets the tile an object is on

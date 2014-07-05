@@ -7,7 +7,65 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="SwapChainBackgroundPanel_Loaded">
 
+    <SwapChainBackgroundPanel.Resources>
+        <!-- HUD Background Styles -->
+        
+        <Style x:Key="HUDBackgroundStyle" TargetType="Grid">
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Background" Value="Yellow"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Canvas.Left" Value="15"/>
+            <Setter Property="Canvas.Top" Value="15"/>  
+        </Style>
+        
+        <!-- End HUD Background Styles -->
+        
+        <!-- Health Bar Styles -->
+        
+        <Style x:Key="OuterHealthBarStyle" TargetType="Border">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="10"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+        
+        <Style x:Key="InnerHealthBarStyle" TargetType="Rectangle">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Fill" Value="Green"/>
+        </Style>
+        
+        <!-- End Health Bar Styles -->
+    </SwapChainBackgroundPanel.Resources>
+
     <Canvas Name="CurrentScreen" x:FieldModifier="public">
         
+    </Canvas>
+
+    <Canvas Name="HUD" x:FieldModifier="public" Visibility="Collapsed">
+        <Grid Name="HUDBackground" Style="{StaticResource HUDBackgroundStyle}" x:FieldModifier="public">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Border Name="OuterHealthBar" Style="{StaticResource OuterHealthBarStyle}" x:FieldModifier="public">
+                <Rectangle Name="InnerHealthBar" Style="{StaticResource InnerHealthBarStyle}" x:FieldModifier="public" />
+            </Border>
+
+            <TextBlock Name="Ammo" Style="{StaticResource TextBlockStyle}" FontSize="14" Text="Ammo Left:" Grid.Row="1" x:FieldModifier="public" />
+        </Grid>
     </Canvas>
 </SwapChainBackgroundPanel>

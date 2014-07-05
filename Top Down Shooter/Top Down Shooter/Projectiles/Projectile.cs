@@ -9,9 +9,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Top_Down_Shooter
 {
-    // TODO: THE PLAYER'S OWN PROJECTILES CAN HIT HIMSELF - FIX!!!
-    // TODO: THE PLAYER'S OWN PROJECTILES CAN HIT HIMSELF - FIX!!!
-    // TODO: THE PLAYER'S OWN PROJECTILES CAN HIT HIMSELF - FIX!!!
+    // TODO: EXISTING PROJECTILES WILL TAKE ON THE EFFECTS OF NEWLY-ACQUIRED POWERUPS
+    //       MAKE IT SO THAT WHEN PROJECTILES ARE SHOT, THEIR DAMAGE IS SET TO A STATIC VALUE BASED ON THE PLAYER'S STATS AND POWERUPS
+    // TODO: EXISTING PROJECTILES WILL TAKE ON THE EFFECTS OF NEWLY-ACQUIRED POWERUPS
+    //       MAKE IT SO THAT WHEN PROJECTILES ARE SHOT, THEIR DAMAGE IS SET TO A STATIC VALUE BASED ON THE PLAYER'S STATS AND POWERUPS
     public class Projectile : LevelObject
     {
         // Stores a reference to the Gun the shot the projectile
@@ -35,6 +36,11 @@ namespace Top_Down_Shooter
         public override Powerup GetPowerup
         {
             get { return SourceGun.GunOwner.PowerUp; }
+        }
+
+        public override LevelObject CollisionOwner
+        {
+            get { return SourceGun.GunOwner; }
         }
 
         public void SetProjectileProperties(Gun sourceGun, Vector2 position, Direction direction, Vector2 moveSpeed, float activeDelayTime)
@@ -70,7 +76,8 @@ namespace Top_Down_Shooter
 
         public override void TouchesTile(Tile tile)
         {
-            if (tile.TileType == Tile.TileTypes.Block)
+            //If the tile is out of bounds or is a block tile, destroy the projectile
+            if (tile.TileType == Tile.TileTypes.Block || tile.IndexX < 0)
                 Die();
         }
 
@@ -138,7 +145,7 @@ namespace Top_Down_Shooter
         {
             if (IsActive == true)
             {
-                spriteBatch.Draw(ObjectTexture, ObjectPos, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+                spriteBatch.Draw(ObjectTexture, ObjectPos - SourceGun.GunOwner.Level.LevelCam.CameraLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
                 if (hitbox != null) hitbox.Draw(spriteBatch);
             }
         }

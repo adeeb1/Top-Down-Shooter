@@ -73,25 +73,25 @@ namespace Top_Down_Shooter
             Cursor.Height = 32;
         }
 
-        public void CursorMove(KeyEventArgs e)
+        public void CursorMove(VirtualKey key)
         {
             // Get the index value of the last item in the MenuOptions list
             int LastMenuOption = (MenuOptions.Count - 1);
 
             // Check if the player moved the selection cursor up
-            if (e.VirtualKey == VirtualKey.Up && SelectedOption > 0)
+            if (key == VirtualKey.Up && SelectedOption > 0)
             {
                 SelectedOption -= 1;
                 SetCursorPosition();
             }
             // Check if the player moved the selection cursor down
-            if (e.VirtualKey == VirtualKey.Down && SelectedOption < LastMenuOption)
+            if (key == VirtualKey.Down && SelectedOption < LastMenuOption)
             {
                 SelectedOption += 1;
                 SetCursorPosition();
             }
             // Check if the player pressed the "Enter" key
-            if (e.VirtualKey == VirtualKey.Enter)
+            if (key == VirtualKey.Enter)
             {
                 PickOption();
             }

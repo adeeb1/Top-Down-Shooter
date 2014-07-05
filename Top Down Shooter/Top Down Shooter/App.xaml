@@ -23,16 +23,21 @@
             <!-- Game FontSize -->
             <x:Double x:Key="GameFontSize">20</x:Double>
 
+            <!-- Game Font Color -->
+            <SolidColorBrush x:Key="GameFontColor">Black</SolidColorBrush>
+
             <!-- TextBlock -->
             <Style x:Key="TextBlockStyle" TargetType="TextBlock">
                 <Setter Property="FontFamily" Value="{StaticResource GameFont}"/>
                 <Setter Property="FontSize" Value="{StaticResource GameFontSize}"/>
+                <Setter Property="Foreground" Value="{StaticResource GameFontColor}"/>
             </Style>
 
             <!-- ComboBox -->
             <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
                 <Setter Property="FontFamily" Value="{StaticResource GameFont}"/>
                 <Setter Property="FontSize" Value="{StaticResource GameFontSize}"/>
+                <Setter Property="Foreground" Value="{StaticResource GameFontColor}"/>
             </Style>
 
             <!-- End Custom Styles -->

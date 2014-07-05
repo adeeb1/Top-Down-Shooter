@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 
 namespace Top_Down_Shooter
 {
@@ -23,6 +24,11 @@ namespace Top_Down_Shooter
 
         //Level reference
         private BaseLevel Level;
+
+        // The HUD for the player
+        // TODO: MAYBE RELOCATE THIS TO ANOTHER CLASS
+        // TODO: MAYBE RELOCATE THIS TO ANOTHER CLASS
+        public HUD PlayerHUD;
 
         // Stack of MenuScreen objects
         private Stack<MenuScreen> MenuScreens;
@@ -78,7 +84,7 @@ namespace Top_Down_Shooter
             base.Initialize();
             
             Level = new BaseLevel();
-            Level.AddObject(new Character1());
+            Level.AddPlayer(new Character1());
             Level.AddObject(new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80)));
             Level.AddObject(new DamagePowerup(new Vector2(200, 100), 100, 5000f));
 
@@ -86,10 +92,9 @@ namespace Top_Down_Shooter
             MenuScreens = new Stack<MenuScreen>();
             
             // Set the game state to indicate the player is viewing a screen
-            gameState = GameState.Screen;
+            GameState = GameState.Screen;
 
-            // Handle the KeyDown event for the game window
-            Windows.UI.Xaml.Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
+            PlayerHUD = new HUD(Level.Player);
 
             // Handle the ClientSizeChanged event for the game window
             Window.ClientSizeChanged += Window_ClientSizeChanged;
@@ -109,17 +114,35 @@ namespace Top_Down_Shooter
             
         }
 
-        public GameState GetGameState
+        public GameState GameState
         {
             get { return gameState; }
+            set
+            {
+                gameState = value;
+
+                if (value == GameState.InGame)
+                {
+                    // Remove the KeyDown event from the game window
+                    Windows.UI.Xaml.Window.Current.CoreWindow.KeyDown -= CoreWindow_KeyDown;
+                }
+                else
+                {
+                    // Handle the KeyDown event for the game window
+                    Windows.UI.Xaml.Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
+                }
+            }
+        }
+
+        private void ChangeCurrentScreenCanvas(Visibility visibility)
+        {
+            GamePage.CurrentScreen.Visibility = visibility;
+            GamePage.HUD.Visibility = (Visibility)((int)visibility ^ 1);
         }
 
         private void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs e)
         {
-            if (MenuScreens.Count > 0)
-            {
-                GetCurrentScreen().CursorMove(e);
-            }
+            if (MenuScreens.Count > 0) GetCurrentScreen().CursorMove(e.VirtualKey);
         }
 
         public void AddScreen(MenuScreen screen)
@@ -159,7 +182,16 @@ namespace Top_Down_Shooter
         public void ChangeGameState(GameState state)
         {
             // Set the game state to the specified state
-            gameState = state;
+            GameState = state;
+
+            if (GameState == GameState.InGame)
+            {
+                ChangeCurrentScreenCanvas(Visibility.Collapsed);
+            }
+            else
+            {
+                ChangeCurrentScreenCanvas(Visibility.Visible);
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -168,7 +200,7 @@ namespace Top_Down_Shooter
             activeTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             // Check which game state the player is in
-            switch (gameState)
+            switch (GameState)
             {
                 case GameState.Screen: // Update the current screen
                     //GetCurrentScreen().Update(this);
@@ -176,6 +208,7 @@ namespace Top_Down_Shooter
                     break;
                 case GameState.InGame: // Update the in-game objects
                     Level.Update(this);
+                    PlayerHUD.Update(this);
 
                     //player.Update();
                     //enemy.Update();
@@ -204,7 +237,7 @@ namespace Top_Down_Shooter
             spriteBatch.Begin(SpriteSortMode.FrontToBack, null, SamplerState.PointClamp, null, null, null);
 
             // Check which game state the player is in
-            switch (gameState)
+            switch (GameState)
             {
                 case GameState.Screen: // Draw the current screen
                     //GetCurrentScreen().Draw(spriteBatch);

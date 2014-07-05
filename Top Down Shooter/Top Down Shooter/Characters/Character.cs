@@ -15,7 +15,7 @@ namespace Top_Down_Shooter
     {
         // Represents the gun the character is currently holding (may need to be a list or an array later for multiple guns)
         public Gun PlayerGun;
-        
+
         // Keyboard state
         public KeyboardState keyboardState;
 
@@ -24,10 +24,15 @@ namespace Top_Down_Shooter
             // Set the player's movement speed
             MoveSpeed = new Vector2(10, 10);
 
+            //Set position (test for now)
+            ObjectPos = Main.ScreenHalf;
+
             // Get the player's texture
             ObjectTexture = LoadAssets.CharTest;
 
             PowerUp = Powerup.Default;
+
+            MaxHealth = 100;
 
             // Create a new keyboard state
             keyboardState = new KeyboardState();
