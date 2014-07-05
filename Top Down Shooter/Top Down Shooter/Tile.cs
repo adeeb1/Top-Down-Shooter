@@ -30,7 +30,7 @@ namespace Top_Down_Shooter
         public Tile()
         {
             TileType = TileTypes.None;
-            IndexX = IndexY = 0;
+            IndexX = IndexY = -1;
         }
 
         public Tile(int indexx, int indexy) : this()

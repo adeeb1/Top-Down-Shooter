@@ -75,7 +75,8 @@ namespace Top_Down_Shooter
 
         public override void TouchesTile(Tile tile)
         {
-            if (tile.TileType == Tile.TileTypes.Block)
+            //If the tile is out of bounds or is a block tile, destroy the projectile
+            if (tile.TileType == Tile.TileTypes.Block || tile.IndexX < 0)
                 Die();
         }
 

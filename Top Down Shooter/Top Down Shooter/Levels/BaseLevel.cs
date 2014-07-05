@@ -30,7 +30,7 @@ namespace Top_Down_Shooter
             levelObjects = new List<LevelObject>();
 
             LevelKeyboard = new KeyboardState(Keys.Enter);
-            TileEngine = new TileEngine(Main.ScreenSize);
+            TileEngine = new TileEngine(Main.ScreenSize * 2);
             LevelCam = new Camera(this);
         }
 

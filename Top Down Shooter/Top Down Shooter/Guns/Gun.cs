@@ -50,7 +50,7 @@ namespace Top_Down_Shooter
 
         protected override float SetDrawDepth()
         {
-            return ((ObjectPos.Y - GunOwner.Level.LevelCam.CameraLocation.Y) / 1000f);
+            return ((ObjectPos.Y + GunOwner.Level.LevelCam.CameraOffset.Y) / 1000f);
         }
 
         public void Fire()

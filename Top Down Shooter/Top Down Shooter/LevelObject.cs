@@ -91,7 +91,10 @@ namespace Top_Down_Shooter
         //Objects lower on the screen will be drawn over objects above
         protected virtual float SetDrawDepth()
         {
-            return ((ObjectPos.Y - Level.LevelCam.CameraLocation.Y) / 1000f);
+            float depth = ((ObjectPos.Y + Level.LevelCam.CameraOffset.Y) / 1000f);
+            if (depth <= 0) depth = .001f;
+
+            return depth;
         }
 
         //The location of the object, including its ObjectOrigin
@@ -344,7 +347,7 @@ namespace Top_Down_Shooter
             if (Debug.FeetLocDraw == true)
             {
                 Rectangle feetloc = FeetLoc;
-                spriteBatch.Draw(LoadAssets.ScalableBox, new Vector2(feetloc.X, feetloc.Y) - Level.LevelCam.CameraLocation, null, Color.Yellow, 0f, Vector2.Zero, new Vector2(feetloc.Width, feetloc.Height), SpriteEffects.None, .999f);
+                spriteBatch.Draw(LoadAssets.ScalableBox, new Vector2(feetloc.X, feetloc.Y) + Level.LevelCam.CameraOffset, null, Color.Yellow, 0f, Vector2.Zero, new Vector2(feetloc.Width, feetloc.Height), SpriteEffects.None, .999f);
             }
         }
     }

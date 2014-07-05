@@ -14,7 +14,10 @@ namespace Top_Down_Shooter
         //Level reference
         public BaseLevel Level;
 
-        //The location of the camera
+        //Specifies if the Camera is active; when inactive (Ex. cutscene), it won't follow the player
+        public bool Active;
+
+        //The location of the camera; this is always the top-left of the screen
         public Vector2 CameraLocation;
 
         //The limits of the camera; it shouldn't go out of bounds
@@ -38,6 +41,13 @@ namespace Top_Down_Shooter
             CameraLocation = startingloc;
         }
 
+        //A constructor which specifies where the camera should start looking at relative to the player's starting location
+        //This constructor makes it so the camera is always centered on the player at the start (if in bounds)
+        public Camera(Vector2 playerloc, BaseLevel level) : this(level, playerloc - Main.ScreenHalf)
+        {
+
+        }
+
         //Easy-access Player reference
         private Character Player
         {
@@ -50,58 +60,71 @@ namespace Top_Down_Shooter
             get { return Level.TileEngine; }
         }
 
-        private Vector2 CameraScrollRange
+        public Vector2 CameraOffset
         {
-            get { return (Main.ScreenHalf + CameraLocation); }
+            get { return -CameraLocation; }
         }
 
-        private float HorizontalDifference
+        //The movement bounds before the camera will move
+        private Rectangle CameraScrollRange
         {
-            get { return Player.ObjectPos.X - CameraLocation.X; }
+            get 
+            {
+                Vector2 centerloc = Main.ScreenHalf + CameraLocation;
+
+                return new Rectangle((int)centerloc.X - 10, (int)centerloc.Y - 10, 20, 20);
+            }
         }
 
-        private float VerticalDifference
+        //Camera speed
+        private Vector2 CameraSpeed
         {
-            get { return Player.ObjectPos.Y - CameraLocation.Y; }
+            get { return Player.MoveSpeed; }
         }
 
         //Check if the camera should scroll left
         private bool CheckScrollLeft()
         {
-            return (Player.ObjectPos.X < CameraScrollRange.X);
+            return (Player.ObjectPos.X < CameraScrollRange.Left);
         }
 
         //Check if the camera should scroll right
         private bool CheckScrollRight()
         {
-            return (Player.ObjectPos.X > CameraScrollRange.X);
+            return (Player.ObjectPos.X > CameraScrollRange.Right);
         }
 
         //Check if the camera should scroll up
         private bool CheckScrollUp()
         {
-            return (Player.ObjectPos.Y < CameraScrollRange.Y);
+            return (Player.ObjectPos.Y < CameraScrollRange.Top);
         }
 
         //Check if the camera should scroll down
         private bool CheckScrollDown()
         {
-            return (Player.ObjectPos.Y > CameraScrollRange.Y);
+            return (Player.ObjectPos.Y > CameraScrollRange.Bottom);
         }
 
         public void Update()
         {
             //Check for scrolling up or down
-            if (CheckScrollLeft() == true) CameraLocation.X += HorizontalDifference;
-            else if (CheckScrollRight() == true) CameraLocation.X -= HorizontalDifference;
-            if (CheckScrollUp() == true) CameraLocation.Y += VerticalDifference;
-            else if (CheckScrollDown() == true) CameraLocation.Y -= VerticalDifference;
+            if (CheckScrollLeft() == true)
+                CameraLocation.X -= CameraSpeed.X;
+            else if (CheckScrollRight() == true)
+                CameraLocation.X += CameraSpeed.X;
+            if (CheckScrollUp() == true)
+                CameraLocation.Y -= CameraSpeed.Y;
+            else if (CheckScrollDown() == true)
+                CameraLocation.Y += CameraSpeed.Y;
 
-            //Check if the camera is out of bounds
-            //if (CameraLocation.X < CameraBounds.Left) CameraLocation.X += (CameraBounds.Left - CameraLocation.X);
-            //else if (CameraLocation.X > CameraBounds.Right) CameraLocation.X -= (CameraLocation.X - CameraBounds.Right);
-            //else if (CameraLocation.Y < CameraBounds.Top) CameraLocation.Y = CameraBounds.Top;
-            //else if (CameraLocation.Y > CameraBounds.Bottom) CameraLocation.Y = CameraBounds.Bottom;
+            //Check if the camera is out of bounds in the X direction
+            if (CameraLocation.X < CameraBounds.Left) CameraLocation.X = CameraBounds.Left;
+            else if ((CameraLocation.X + Main.ScreenSize.X) > CameraBounds.Right) CameraLocation.X = (CameraBounds.Right - Main.ScreenSize.X);
+            
+            //Check if the camera is out of bounds in the Y direction
+            if (CameraLocation.Y < CameraBounds.Top) CameraLocation.Y = CameraBounds.Top;
+            else if ((CameraLocation.Y + Main.ScreenSize.Y) > CameraBounds.Bottom) CameraLocation.Y = (CameraBounds.Bottom - Main.ScreenSize.Y);
         }
 
         //public void Draw(SpriteBatch spriteBatch)

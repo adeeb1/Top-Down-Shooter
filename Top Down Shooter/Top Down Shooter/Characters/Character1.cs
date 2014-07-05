@@ -11,7 +11,7 @@ namespace Top_Down_Shooter
     {
         public Character1()
         {
-            MoveSpeed = new Vector2(5, 5);
+            MoveSpeed = new Vector2(3, 3);
 
             Health = 20;
 

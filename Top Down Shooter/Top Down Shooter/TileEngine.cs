@@ -39,7 +39,7 @@ namespace Top_Down_Shooter
         {
             get 
             {
-                if (x > 0 && y > 0 && x < Tiles.Length && y < Tiles[x].Length) return Tiles[x][y];
+                if (x >= 0 && y >= 0 && x < Tiles.Length && y < Tiles[x].Length) return Tiles[x][y];
                 else return new Tile();
             }
         }
