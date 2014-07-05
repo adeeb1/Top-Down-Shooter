@@ -38,6 +38,11 @@ namespace Top_Down_Shooter
             get { return SourceGun.GunOwner.PowerUp; }
         }
 
+        public override LevelObject CollisionOwner
+        {
+            get { return SourceGun.GunOwner; }
+        }
+
         public void SetProjectileProperties(Gun sourceGun, Vector2 position, Direction direction, Vector2 moveSpeed, float activeDelayTime)
         {
             // Store the gun that shot the projectile
@@ -71,7 +76,8 @@ namespace Top_Down_Shooter
 
         public override void TouchesTile(Tile tile)
         {
-            if (tile.TileType == Tile.TileTypes.Block)
+            //If the tile is out of bounds or is a block tile, destroy the projectile
+            if (tile.TileType == Tile.TileTypes.Block || tile.IndexX < 0)
                 Die();
         }
 
@@ -139,7 +145,7 @@ namespace Top_Down_Shooter
         {
             if (IsActive == true)
             {
-                spriteBatch.Draw(ObjectTexture, ObjectPos, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+                spriteBatch.Draw(ObjectTexture, ObjectPos - SourceGun.GunOwner.Level.LevelCam.CameraLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
                 if (hitbox != null) hitbox.Draw(spriteBatch);
             }
         }

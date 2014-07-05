@@ -133,6 +133,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Camera.cs" />
     <Compile Include="Characters\Character1.cs" />
     <Compile Include="Collision\Collideable.cs" />
     <Compile Include="Debug.cs" />

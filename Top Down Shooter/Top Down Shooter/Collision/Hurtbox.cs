@@ -74,7 +74,7 @@ namespace Top_Down_Shooter
         //Draw the hurtbox (debug info only)
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(LoadAssets.ScalableBox, new Vector2(Bounds.X, Bounds.Y), null, Color.Blue, 0f, Vector2.Zero, new Vector2(Bounds.Width, Bounds.Height), SpriteEffects.None, .999f);
+            spriteBatch.Draw(LoadAssets.ScalableBox, new Vector2(Bounds.X, Bounds.Y) + hurtboxOwner.Level.LevelCam.CameraOffset, null, Color.Blue, 0f, Vector2.Zero, new Vector2(Bounds.Width, Bounds.Height), SpriteEffects.None, .999f);
         }
     }
 }

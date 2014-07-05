@@ -49,6 +49,11 @@ namespace Top_Down_Shooter
             ShootDelayTime = shootDelayTime;
         }
 
+        protected override float SetDrawDepth()
+        {
+            return ((ObjectPos.Y + GunOwner.Level.LevelCam.CameraOffset.Y) / 1000f);
+        }
+
         public void Fire()
         {
             // Check if the user is holding the Left Control key and has some ammo left
@@ -88,7 +93,7 @@ namespace Top_Down_Shooter
             // TODO: Add in rotation so that when facing up or down, the gun is rotated 90 degrees
             // TODO: Add in rotation so that when facing up or down, the gun is rotated 90 degrees
 
-            spriteBatch.Draw(ObjectTexture, ObjectPos, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+            spriteBatch.Draw(ObjectTexture, ObjectPos - GunOwner.Level.LevelCam.CameraLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
 
             //for (int i = 0; i < GunProjectiles.Count; i++)
             //{

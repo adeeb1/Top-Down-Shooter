@@ -24,6 +24,9 @@ namespace Top_Down_Shooter
             // Set the player's movement speed
             MoveSpeed = new Vector2(10, 10);
 
+            //Set position (test for now)
+            ObjectPos = Main.ScreenHalf;
+
             // Get the player's texture
             ObjectTexture = LoadAssets.CharTest;
 
