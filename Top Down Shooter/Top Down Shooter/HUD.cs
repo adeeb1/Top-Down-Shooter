@@ -45,13 +45,13 @@ namespace Top_Down_Shooter
 
             HUDWidth = (384 / Main.ResolutionScaleFactor.X);
             //HUDHeight = (300 / Main.ResolutionScaleFactor.Y);
-            HUDHeight = 384;
+            HUDHeight = 30;
         }
 
         public void Update(Main main)
         {
             // TODO: DO A CALCULATION SIMILAR TO THE ResolutionScaleFactor, EXCEPT WITH THE ActualHeight OF THE HUD CANVAS
-            HUDHeight = 384 / (Main.ScreenSize.Y / main.GamePage.HUD.ActualHeight);
+            HUDHeight = 30 / (Main.ScreenSize.Y / main.GamePage.HUD.ActualHeight);
 
             main.GamePage.HUDBackground.Width = HUDWidth;
             main.GamePage.HUDBackground.Height = HUDHeight;

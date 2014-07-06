@@ -17,6 +17,9 @@ namespace Top_Down_Shooter
         // Object texture
         public Texture2D ObjectTexture;
 
+        //Object animation
+        public Animation ObjectAnim;
+
         // Stores the direction of the object
         public Direction ObjectDir;
 
@@ -85,6 +88,12 @@ namespace Top_Down_Shooter
 
                 return origin;
             }
+        }
+
+        //The location to draw the object, which takes the camera's position into account
+        protected Vector2 DrawLocation
+        {
+            get { return ObjectPos + Level.LevelCam.CameraOffset; }
         }
 
         //Sets the draw depth of a level object
@@ -324,13 +333,15 @@ namespace Top_Down_Shooter
 
         public virtual void Update()
         {
-
+            if (ObjectAnim != null) ObjectAnim.Update();
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (ObjectTexture != null)
-                spriteBatch.Draw(ObjectTexture, ObjectPos - Level.LevelCam.CameraLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+            //if (ObjectTexture != null)
+            //    spriteBatch.Draw(ObjectTexture, DrawLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+            if (ObjectAnim != null)
+                ObjectAnim.Draw(spriteBatch, DrawLocation, SetDrawDepth());
 
             //Draw debug info
             DebugDraw(spriteBatch);

@@ -130,6 +130,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation.cs" />
+    <Compile Include="AnimFrame.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -177,6 +179,7 @@
     </AppxManifest>
     <Content Include="Content\Graphics\guntest.png" />
     <Content Include="Content\Graphics\mario.png" />
+    <Content Include="Content\Graphics\MarioSMRPG.png" />
     <Content Include="Content\Graphics\MenuFont.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -13,6 +13,10 @@ namespace Top_Down_Shooter
     //Base character class
     public abstract class Character : LevelObject
     {
+        //The last resort pistol that the player uses when the player has no ammo left at all; it has infinite ammo but is very weak
+        //NOTE: This may not be need to be an explicit definition depending on the way we handle multiple guns (Ex. array)
+        public Gun BackupGun;
+
         // Represents the gun the character is currently holding (may need to be a list or an array later for multiple guns)
         public Gun PlayerGun;
 
@@ -29,6 +33,9 @@ namespace Top_Down_Shooter
 
             // Get the player's texture
             ObjectTexture = LoadAssets.CharTest;
+            ObjectAnim = new Animation(LoadAssets.CharAnimation, new AnimFrame(new Rectangle(10, 118, 18, 29), Vector2.Zero, 200f),
+                                                                 new AnimFrame(new Rectangle(36, 118, 17, 29), Vector2.Zero, 200f),
+                                                                 new AnimFrame(new Rectangle(60, 118, 18, 29), new Vector2(-1, 0), 200f));
 
             PowerUp = Powerup.Default;
 
@@ -101,6 +108,13 @@ namespace Top_Down_Shooter
             }
         }
 
+        //Picks up a gun and gives it to the player
+        public void PickupGun(Gun gun)
+        {
+            PlayerGun = gun;
+            PlayerGun.Level = this.Level;
+        }
+
         public void SwitchGun()
         {
             // TODO: Code switching to another gun slot
@@ -108,6 +122,9 @@ namespace Top_Down_Shooter
 
         public override void Update()
         {
+            //Update animations and such
+            base.Update();
+
             // Move the player if possible
             PlayerMove();
 
