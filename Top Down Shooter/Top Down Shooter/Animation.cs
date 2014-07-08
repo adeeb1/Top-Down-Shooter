@@ -22,6 +22,9 @@ namespace Top_Down_Shooter
         //The current frame
         protected int CurFrame;
 
+        //States whether the animation is playing or not; it's set to play by default
+        protected bool Playing;
+
         public Animation(Texture2D spritesheet, params AnimFrame[] frames)
         {
             SpriteSheet = spritesheet;
@@ -30,6 +33,20 @@ namespace Top_Down_Shooter
 
             CurFrame = 0;
             CurrentFrame.ResetFrame();
+            Playing = true;
+        }
+
+        //A copy constructor, allowing a duplicate of the same animation except with it flipped a certain way
+        public Animation(Animation oldanimation, SpriteEffects flipped)
+        {
+            this.SpriteSheet = oldanimation.SpriteSheet;
+            this.Frames = new List<AnimFrame>();
+
+            for (int i = 0; i < oldanimation.Frames.Count; i++)
+                this.Frames.Add(new AnimFrame(oldanimation.Frames[i], this, flipped));
+
+            this.CurFrame = oldanimation.CurFrame;
+            this.Playing = oldanimation.Playing;
         }
 
         //The default origin all sprites are to be drawn; the bottom-middle of the sprite
@@ -45,6 +62,12 @@ namespace Top_Down_Shooter
             return new Vector2((int)(GraphicSize.X / 2), GraphicSize.Y);
         }
 
+        //Tells whether the animation is playing or not
+        public bool IsPlaying
+        {
+            get { return Playing; }
+        }
+
         protected AnimFrame CurrentFrame
         {
             get { return Frames[CurFrame]; }
@@ -56,9 +79,55 @@ namespace Top_Down_Shooter
             Frames[CurFrame].ResetFrame();
         }
 
+        //Starts the animation up again
+        public void Play()
+        {
+            Playing = true;
+        }
+
+        //Stops the animation and resets it
+        public void Stop()
+        {
+            Playing = false;
+            Reset();
+        }
+
+        //Pauses the animation
+        public void Pause()
+        {
+            Playing = false;
+            CurrentFrame.PauseFrame();
+        }
+
+        //Resumes the animation
+        public void Resume()
+        {
+            Play();
+            CurrentFrame.ResumeFrame();
+        }
+
+        //Resets the animation back to the start
+        public void Reset()
+        {
+            CurFrame = 0;
+        }
+
+        //Restarts the animation; there is an option for just restarting the current frame
+        public void Restart(bool entireanimation = true)
+        {
+            //Stop the animation and restart it
+            if (entireanimation == true)
+            {
+                Stop();
+                Play();
+            }
+            
+            CurrentFrame.ResetFrame();
+        }
+
         public void Update()
         {
-            if (CurrentFrame.FrameComplete == true)
+            if (Playing == true && CurrentFrame.FrameComplete == true)
                 NextFrame();
         }
 

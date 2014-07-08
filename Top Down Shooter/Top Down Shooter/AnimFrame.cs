@@ -25,12 +25,20 @@ namespace Top_Down_Shooter
         private float FrameDuration;
         private float PrevDuration;
 
+        //How much time is remaining in the frame when the frame was paused
+        private float TimePaused;
+
+        //Whether the frame is flipped or not
+        private SpriteEffects Flipped;
+
         public AnimFrame()
         {
             Anim = null;
             FrameBox = Rectangle.Empty;
             FrameOrigin = Vector2.Zero;
-            FrameDuration = PrevDuration = 0;
+            FrameDuration = PrevDuration = TimePaused = 0f;
+
+            Flipped = SpriteEffects.None;
         }
 
         public AnimFrame(Rectangle framebox, Vector2 frameorigin, float frameduration) : this()
@@ -38,6 +46,24 @@ namespace Top_Down_Shooter
             FrameBox = framebox;
             FrameOrigin = frameorigin;
             FrameDuration = frameduration;
+        }
+
+        public AnimFrame(Rectangle framebox, Vector2 frameorigin, float frameduration, SpriteEffects flipped) : this(framebox, frameorigin, frameduration)
+        {
+            Flipped = flipped;
+        }
+
+        //Copy constructor with the flipped parameter
+        public AnimFrame(AnimFrame oldframe, Animation newanimation, SpriteEffects flipped)
+        {
+            this.Anim = newanimation;
+
+            this.FrameBox = oldframe.FrameBox;
+            this.FrameOrigin = oldframe.FrameOrigin;
+            this.FrameDuration = oldframe.FrameDuration;
+            this.PrevDuration = 0f;
+
+            this.Flipped = flipped;
         }
 
         public bool FrameComplete
@@ -51,9 +77,22 @@ namespace Top_Down_Shooter
             PrevDuration = (Main.activeTime + FrameDuration);
         }
 
+        //Pauses the frame
+        public void PauseFrame()
+        {
+            TimePaused = PrevDuration - Main.activeTime;
+        }
+
+        //Resumes the frame
+        public void ResumeFrame()
+        {
+            PrevDuration = Main.activeTime + TimePaused;
+            TimePaused = 0f;
+        }
+
         public void Draw(SpriteBatch spriteBatch, Vector2 drawlocation, float depth)
         {
-            spriteBatch.Draw(Anim.SpriteSheet, drawlocation, FrameBox, Color.White, 0f, Animation.DefaultOrigin(new Vector2(FrameBox.Width, FrameBox.Height)) + FrameOrigin, 1f, SpriteEffects.None, depth);
+            spriteBatch.Draw(Anim.SpriteSheet, drawlocation, FrameBox, Color.White, 0f, Animation.DefaultOrigin(new Vector2(FrameBox.Width, FrameBox.Height)) + FrameOrigin, 1f, Flipped, depth);
         }
     }
 }

@@ -17,8 +17,11 @@ namespace Top_Down_Shooter
         // Object texture
         public Texture2D ObjectTexture;
 
-        //Object animation
-        public Animation ObjectAnim;
+        //The object's current playing animation; if this is null, the texture will draw
+        public Animation CurrentAnim;
+
+        //Animations most objects may have; this includes all the 4 cardinal directions
+        public Animation[] DirectionAnim;
 
         // Stores the direction of the object
         public Direction ObjectDir;
@@ -53,7 +56,10 @@ namespace Top_Down_Shooter
             ObjectPos = Vector2.Zero;
             Dead = false;
 
+            ObjectDir = Direction.Up;
             MaxHealth = 10;
+
+            DirectionAnim = new Animation[Enum.GetValues(typeof(Direction)).Length];
         }
 
         //Get if the object is dead or not
@@ -333,15 +339,16 @@ namespace Top_Down_Shooter
 
         public virtual void Update()
         {
-            if (ObjectAnim != null) ObjectAnim.Update();
+            if (CurrentAnim != null) CurrentAnim.Update();
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            //if (ObjectTexture != null)
-            //    spriteBatch.Draw(ObjectTexture, DrawLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
-            if (ObjectAnim != null)
-                ObjectAnim.Draw(spriteBatch, DrawLocation, SetDrawDepth());
+            //If the current animation is null, the object texture will draw
+            if (CurrentAnim != null)
+                CurrentAnim.Draw(spriteBatch, DrawLocation, SetDrawDepth());
+            else if (ObjectTexture != null)
+                spriteBatch.Draw(ObjectTexture, DrawLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
 
             //Draw debug info
             DebugDraw(spriteBatch);

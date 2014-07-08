@@ -33,9 +33,21 @@ namespace Top_Down_Shooter
 
             // Get the player's texture
             ObjectTexture = LoadAssets.CharTest;
-            ObjectAnim = new Animation(LoadAssets.CharAnimation, new AnimFrame(new Rectangle(10, 118, 18, 29), Vector2.Zero, 200f),
+
+            DirectionAnim[(int)Direction.Left] = new Animation(LoadAssets.CharAnimation, new AnimFrame(new Rectangle(10, 154, 18, 29), Vector2.Zero, 200f),
+                                                                 new AnimFrame(new Rectangle(35, 153, 17, 30), Vector2.Zero, 200f),
+                                                                 new AnimFrame(new Rectangle(59, 154, 20, 29), Vector2.Zero, 200f));
+
+            DirectionAnim[(int)Direction.Up] = new Animation(LoadAssets.CharAnimation, new AnimFrame(new Rectangle(10, 118, 18, 29), Vector2.Zero, 200f),
                                                                  new AnimFrame(new Rectangle(36, 118, 17, 29), Vector2.Zero, 200f),
                                                                  new AnimFrame(new Rectangle(60, 118, 18, 29), new Vector2(-1, 0), 200f));
+
+            DirectionAnim[(int)Direction.Right] = new Animation(DirectionAnim[(int)Direction.Left], SpriteEffects.FlipHorizontally);
+
+            DirectionAnim[(int)Direction.Down] = new Animation(LoadAssets.CharAnimation, new AnimFrame(new Rectangle(62, 82, 16, 30), Vector2.Zero, 200f),
+                                                                   new AnimFrame(new Rectangle(37, 83, 17, 29), Vector2.Zero, 200f),
+                                                                   new AnimFrame(new Rectangle(13, 82, 15, 30), Vector2.Zero, 200f));
+
 
             PowerUp = Powerup.Default;
 
@@ -95,7 +107,14 @@ namespace Top_Down_Shooter
                 ObjectDir = PlayerGun.ObjectDir = Direction.Down;
             }
 
-            if (totalmovement != Vector2.Zero) Move(totalmovement);
+            CurrentAnim = DirectionAnim[(int)ObjectDir];
+
+            if (totalmovement != Vector2.Zero)
+            {
+                if (CurrentAnim.IsPlaying == false) CurrentAnim.Play();
+                Move(totalmovement);
+            }
+            else CurrentAnim.Stop();
         }
 
         public void ShootGun()
