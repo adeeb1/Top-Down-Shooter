@@ -38,8 +38,7 @@ namespace Top_Down_Shooter
             {
                 case 0: // Start Game
                     // Start the game
-                    Game.RemoveScreen();
-                    Game.ChangeGameState(GameState.InGame);
+                    Game.StartGame();
                     break;
                 case 1: // Options
                     Game.AddScreen(new OptionsScreen(GamePage, Game));

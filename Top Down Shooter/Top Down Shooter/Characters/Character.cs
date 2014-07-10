@@ -20,6 +20,9 @@ namespace Top_Down_Shooter
         // Represents the gun the character is currently holding (may need to be a list or an array later for multiple guns)
         public Gun PlayerGun;
 
+        // The HUD for the player
+        public HUD PlayerHUD;
+
         // Keyboard state
         public KeyboardState keyboardState;
 
@@ -27,7 +30,7 @@ namespace Top_Down_Shooter
         {
             // Set the player's movement speed
             MoveSpeed = new Vector2(10, 10);
-
+            
             //Set position (test for now)
             ObjectPos = Main.ScreenHalf;
 
@@ -139,6 +142,11 @@ namespace Top_Down_Shooter
             // TODO: Code switching to another gun slot
         }
 
+        public override void Die()
+        {
+            base.Die();
+        }
+
         public override void Update()
         {
             //Update animations and such
@@ -155,10 +163,17 @@ namespace Top_Down_Shooter
                 PlayerGun.Update();
             }
 
+            PlayerHUD.Update();
+
             //TESTING SOUNDS ONLY; REMOVE LATER
             if (Input.IsKeyDown(keyboardState, Keys.Q) == true)
             {
                 SoundManager.PlaySound(LoadAssets.TestSound);
+            }
+
+            if (Input.IsKeyHeld(Keys.K) == true)
+            {
+                TakeDamage(new Hitbox(this, Rectangle.Empty, 2, 0f, 0f));
             }
 
             //Update the player's Powerup

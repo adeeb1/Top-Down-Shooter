@@ -25,11 +25,6 @@ namespace Top_Down_Shooter
         //Level reference
         private BaseLevel Level;
 
-        // The HUD for the player
-        // TODO: MAYBE RELOCATE THIS TO ANOTHER CLASS
-        // TODO: MAYBE RELOCATE THIS TO ANOTHER CLASS
-        public HUD PlayerHUD;
-
         // Stack of MenuScreen objects
         private Stack<MenuScreen> MenuScreens;
 
@@ -82,19 +77,12 @@ namespace Top_Down_Shooter
         {
             // TODO: Add your initialization logic here
             base.Initialize();
-            
-            Level = new BaseLevel();
-            Level.AddPlayer(new Character1());
-            Level.AddObject(new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80)));
-            Level.AddObject(new DamagePowerup(new Vector2(200, 100), 100, 5000f));
 
             // Create a new stack of MenuScreen objects
             MenuScreens = new Stack<MenuScreen>();
             
             // Set the game state to indicate the player is viewing a screen
             GameState = GameState.Screen;
-
-            PlayerHUD = new HUD(Level.Player);
 
             // Handle the ClientSizeChanged event for the game window
             Window.ClientSizeChanged += Window_ClientSizeChanged;
@@ -194,6 +182,27 @@ namespace Top_Down_Shooter
             }
         }
 
+        public void StartGame()
+        {
+            // Remove the Title Screen
+            RemoveScreen();
+
+            // Set the player to in-game
+            ChangeGameState(GameState.InGame);
+
+            // Force the HUD Canvas to render itself and its child elements
+            GamePage.HUD.UpdateLayout();
+
+            Level = new BaseLevel();
+
+            Level.AddPlayer(new Character1());
+            Level.AddObject(new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80)));
+            Level.AddObject(new DamagePowerup(new Vector2(200, 100), 100, 5000f));
+
+            // Add a HUD for the player
+            Level.Player.PlayerHUD = new HUD(this, Level.Player);
+        }
+
         protected override void Update(GameTime gameTime)
         {
             //Update active time
@@ -208,7 +217,6 @@ namespace Top_Down_Shooter
                     break;
                 case GameState.InGame: // Update the in-game objects
                     Level.Update(this);
-                    PlayerHUD.Update(this);
 
                     //player.Update();
                     //enemy.Update();
