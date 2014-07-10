@@ -51,6 +51,9 @@ namespace Top_Down_Shooter
         //Tells if the object is dead or not
         protected bool Dead;
 
+        // Checks whether or not the object is active
+        public bool IsActive;
+
         public LevelObject()
         {
             ObjectPos = Vector2.Zero;

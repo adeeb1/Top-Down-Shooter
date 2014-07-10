@@ -82,6 +82,12 @@ namespace Top_Down_Shooter
             get { return Player.MoveSpeed; }
         }
 
+        // The on-screen content that the player sees
+        public Rectangle CameraRect
+        {
+            get { return new Rectangle((int)CameraLocation.X, (int)CameraLocation.Y, (int)Main.ScreenSize.X, (int)Main.ScreenSize.Y); }
+        }
+
         //Check if the camera should scroll left
         private bool CheckScrollLeft()
         {
@@ -125,6 +131,21 @@ namespace Top_Down_Shooter
             //Check if the camera is out of bounds in the Y direction
             if (CameraLocation.Y < CameraBounds.Top) CameraLocation.Y = CameraBounds.Top;
             else if ((CameraLocation.Y + Main.ScreenSize.Y) > CameraBounds.Bottom) CameraLocation.Y = (CameraBounds.Bottom - Main.ScreenSize.Y);
+
+            // Loop through all of the objects in the level
+            for (int i = 0; i < Level.levelObjects.Count; i++)
+            {
+                // Get the rectangle surrounding the level object
+                Rectangle levelObjRect = new Rectangle((int)(Level.levelObjects[i].ObjectPos.X), (int)(Level.levelObjects[i].ObjectPos.Y),
+                                                       Level.levelObjects[i].ObjectTexture.Width, Level.levelObjects[i].ObjectTexture.Height);                                                       
+
+                // Make sure the level object is not the player, and check if the object is on screen
+                if ((Level.levelObjects[i] != Player) && (CameraRect.Intersects(levelObjRect)))
+                {
+                    // Set the object to active since it is on screen
+                    Level.levelObjects[i].IsActive = true;
+                }
+            }
         }
 
         //public void Draw(SpriteBatch spriteBatch)
