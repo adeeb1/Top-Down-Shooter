@@ -141,6 +141,7 @@
     <Compile Include="Debug.cs" />
     <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="Enemies\Enemy1.cs" />
+    <Compile Include="Enemies\WalkingEnemy.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>

@@ -197,6 +197,7 @@ namespace Top_Down_Shooter
 
             Level.AddPlayer(new Character1());
             Level.AddObject(new Enemy1(LoadAssets.EnemyTestTexture, new Vector2(400, 80)));
+            Level.AddObject(new WalkingEnemy(LoadAssets.CharTest, new Vector2(1000, 80)));
             Level.AddObject(new DamagePowerup(new Vector2(200, 100), 100, 5000f));
 
             // Add a HUD for the player

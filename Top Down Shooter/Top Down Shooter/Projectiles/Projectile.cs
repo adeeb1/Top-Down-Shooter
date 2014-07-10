@@ -25,9 +25,6 @@ namespace Top_Down_Shooter
         // Stores the time (in game time) the projectile will be active
         public float ActiveTime;
 
-        // Checks whether or not the projectile is active
-        private bool IsActive;
-
         public Projectile()
         {
             Health = 1;
