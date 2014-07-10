@@ -22,9 +22,6 @@ namespace Top_Down_Shooter
         //The camera for the level
         public Camera LevelCam;
 
-        //The player reference
-        public Character Player;
-
         //The level's tile engine
         public TileEngine TileEngine;
 

@@ -17,6 +17,7 @@ namespace Top_Down_Shooter
     public static class LoadAssets
     {
         //Graphics
+        public static Texture2D CharAnimation;
         public static Texture2D CharTest;
         public static Texture2D TestTexture;
         public static Texture2D CursorTexture;
@@ -51,6 +52,7 @@ namespace Top_Down_Shooter
         //Load all graphics
         public static void LoadGraphics(ContentManager Content)
         {
+            CharAnimation = Content.Load<Texture2D>("Graphics/MarioSMRPG");
             CharTest = Content.Load<Texture2D>("Graphics/mario");
             TestTexture = Content.Load<Texture2D>("Graphics\\test");
             CursorTexture = Content.Load<Texture2D>("Graphics/cursor");

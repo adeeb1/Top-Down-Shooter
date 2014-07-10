@@ -17,6 +17,12 @@ namespace Top_Down_Shooter
         // Object texture
         public Texture2D ObjectTexture;
 
+        //The object's current playing animation; if this is null, the texture will draw
+        public Animation CurrentAnim;
+
+        //Animations most objects may have; this includes all the 4 cardinal directions
+        public Animation[] DirectionAnim;
+
         // Stores the direction of the object
         public Direction ObjectDir;
 
@@ -50,7 +56,10 @@ namespace Top_Down_Shooter
             ObjectPos = Vector2.Zero;
             Dead = false;
 
+            ObjectDir = Direction.Up;
             MaxHealth = 10;
+
+            DirectionAnim = new Animation[Enum.GetValues(typeof(Direction)).Length];
         }
 
         //Get if the object is dead or not
@@ -85,6 +94,12 @@ namespace Top_Down_Shooter
 
                 return origin;
             }
+        }
+
+        //The location to draw the object, which takes the camera's position into account
+        protected Vector2 DrawLocation
+        {
+            get { return ObjectPos + Level.LevelCam.CameraOffset; }
         }
 
         //Sets the draw depth of a level object
@@ -324,13 +339,16 @@ namespace Top_Down_Shooter
 
         public virtual void Update()
         {
-
+            if (CurrentAnim != null) CurrentAnim.Update();
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (ObjectTexture != null)
-                spriteBatch.Draw(ObjectTexture, ObjectPos - Level.LevelCam.CameraLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+            //If the current animation is null, the object texture will draw
+            if (CurrentAnim != null)
+                CurrentAnim.Draw(spriteBatch, DrawLocation, SetDrawDepth());
+            else if (ObjectTexture != null)
+                spriteBatch.Draw(ObjectTexture, DrawLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
 
             //Draw debug info
             DebugDraw(spriteBatch);

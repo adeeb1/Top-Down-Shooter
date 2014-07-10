@@ -21,14 +21,19 @@ namespace Top_Down_Shooter
         public int MaxAmmo;
 
         // Stores the ammo left for the gun
-        public int AmmoLeft
-        { get; set; }
+        public int AmmoLeft;
+
+        // Stores the size of the gun's clip
+        public int ClipSize;
 
         // Delay time between shots
         public float ShootDelayTime;
 
         // Stores the next time (in game time) the user can shoot a projectile
         float NextShootTime;
+
+        // Delay time for how long it takes the player to reload the gun
+        public float ReloadTime;
 
         public Gun()
         {

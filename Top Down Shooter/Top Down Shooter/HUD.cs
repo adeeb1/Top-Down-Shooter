@@ -5,66 +5,120 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Windows.UI;
+using Windows.UI.Xaml;
 
 namespace Top_Down_Shooter
 {
     // TODO: CLEAN UP THIS CLASS!!!!
     public class HUD
     {
+        // Reference to GamePage.xaml for less typing
+        public GamePage GamePage;
+
+        // Reference to the player
         public Character PlayerChar;
-        
-        private Texture2D BackgroundTexture;
-        private Texture2D HealthTexture;
 
-        private SpriteFont HUDFont;
-        
-        private double HealthBarWidth;
-        private double HealthBarHeight;
-
-        private double FontSize;
+        // Width and Height of the HUD's background rectangle
         private double HUDWidth;
         private double HUDHeight;
 
-        // TODO: NEED A REFERENCE TO Main IN BOTH THE CONSTRUCTOR AND THE UPDATE METHOD
-        public HUD(Character player)
+        // Width and Height of the Player's health bar
+        private double HealthBarWidth;
+        private double HealthBarHeight;
+
+        // Font size of text
+        private double FontSize;
+
+        // The scale factor that proportionally scales the size of XAML UI elements based on the player's screen resolution
+        // This allows the HUD to look the same on all machines, regardless of screen size
+        private Vector2 HUDScaleFactor;
+
+        public HUD(Main main, Character player)
         {
+            // Get the reference to Main and GamePage
+            GamePage = main.GamePage;
+
+            // Get the player reference
             PlayerChar = player;
 
-            BackgroundTexture = LoadAssets.ScalableBox;
-            HealthTexture = LoadAssets.ScalableBox;
+            // Get the HUD's scale factor by finding the (Defined Screen Size to HUD Canvas Size) ratio 
+            HUDScaleFactor = new Vector2((float)(Main.ScreenSize.X / GamePage.HUD.ActualWidth),
+                                         (float)(Main.ScreenSize.Y / GamePage.HUD.ActualHeight));
+            
+            // Get the Width and Height of the HUD's background rectangle
+            HUDWidth = GetWidth(GamePage.HUDBackground.Width);
+            HUDHeight = GetHeight(GamePage.HUDBackground.Height);
 
-            // TODO: ADD SCALING TO ALL CONTROLS ON GAMEPAGE TO FACTOR IN RESOLUTION
-            // TODO: ADD SCALING TO ALL CONTROLS ON GAMEPAGE TO FACTOR IN RESOLUTION
+            // Get the Width and Height of the player's health bar
+            HealthBarWidth = GetWidth(GamePage.OuterHealthBar.Width);
+            HealthBarHeight = GetHeight(GamePage.OuterHealthBar.Height);
 
-            HealthBarWidth = (100 / Main.ResolutionScaleFactor.X);
-            HealthBarHeight = (10 / Main.ResolutionScaleFactor.Y);
+            // Get the Font Size of the player's remaining ammo
+            FontSize = GetWidth(GamePage.ClipAmmoLeft.FontSize);
 
-            FontSize = (14 / Main.ResolutionScaleFactor.X);
-
-            HUDFont = LoadAssets.MenuFont;
-
-            HUDWidth = (384 / Main.ResolutionScaleFactor.X);
-            //HUDHeight = (300 / Main.ResolutionScaleFactor.Y);
-            HUDHeight = 384;
+            // Apply the scaled values to the XAML UI elements
+            ApplyElementDimensions();
+            ApplyElementFontSizes();
         }
 
-        public void Update(Main main)
+        public void Update()
         {
-            // TODO: DO A CALCULATION SIMILAR TO THE ResolutionScaleFactor, EXCEPT WITH THE ActualHeight OF THE HUD CANVAS
-            HUDHeight = 384 / (Main.ScreenSize.Y / main.GamePage.HUD.ActualHeight);
+            // Update the health bar
+            UpdateHealthBar();
 
-            main.GamePage.HUDBackground.Width = HUDWidth;
-            main.GamePage.HUDBackground.Height = HUDHeight;
-            
-            main.GamePage.OuterHealthBar.Width = HealthBarWidth;
-            main.GamePage.OuterHealthBar.Height = HealthBarHeight;
+            // Update the player's remaining ammo
+            GamePage.ClipAmmoLeft.Text = PlayerChar.PlayerGun.AmmoLeft.ToString();
+            GamePage.TotalAmmoLeft.Text = PlayerChar.PlayerGun.MaxAmmo.ToString();
+        }
 
-            
+        // Gets the scaled Width of a XAML UI element
+        private double GetWidth(double width)
+        {
+            return (width / HUDScaleFactor.X);
+        }
 
-            main.GamePage.InnerHealthBar.Width = ((float)PlayerChar.Health / (float)PlayerChar.MaxHealth) * HealthBarWidth;
-            main.GamePage.InnerHealthBar.Height = HealthBarHeight;
-            main.GamePage.Ammo.FontSize = FontSize;
-            main.GamePage.Ammo.Text = "Ammo: " + PlayerChar.PlayerGun.AmmoLeft + " / " + PlayerChar.PlayerGun.MaxAmmo;
+        // Gets the scaled Height of a XAML UI element
+        private double GetHeight(double height)
+        {
+            return (height / HUDScaleFactor.Y);
+        }
+
+        // Applies the scaled Width and Height properties to the XAML UI elements
+        private void ApplyElementDimensions()
+        {
+            // HUD background rectangle
+            GamePage.HUDBackground.Width = HUDWidth;
+            GamePage.HUDBackground.Height = HUDHeight;
+
+            // Health bar
+            GamePage.OuterHealthBar.Width = GamePage.InnerHealthBar.Width = HealthBarWidth;
+            GamePage.OuterHealthBar.Height = GamePage.InnerHealthBar.Height = HealthBarHeight;
+
+            GamePage.GunImage.Width = GetWidth(GamePage.GunImage.ActualWidth);
+            GamePage.GunImage.Height = GetHeight(GamePage.GunImage.ActualHeight);
+        }
+
+        // Applies the scaled FontSize property to the XAML UI elements
+        private void ApplyElementFontSizes()
+        {
+            // Ammo Left
+            GamePage.ClipAmmoLeft.FontSize = FontSize;
+
+            // TODO: THIS NEEDS A SEPARATE VARIABLE
+            // TODO: THIS NEEDS A SEPARATE VARIABLE
+            GamePage.TotalAmmoLeft.FontSize = GetWidth(GamePage.TotalAmmoLeft.FontSize);
+        }
+
+        // Updates the Width of the inner health bar to indicate how much health the player has remaining
+        private void UpdateHealthBar()
+        {
+            GamePage.InnerHealthBar.Width = ((float)PlayerChar.Health / (float)PlayerChar.MaxHealth) * HealthBarWidth;
+        }
+
+        public void Remove()
+        {
+            GamePage.HUD.Visibility = Visibility.Collapsed;
         }
 
 

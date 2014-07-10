@@ -43,6 +43,18 @@
         </Style>
         
         <!-- End Health Bar Styles -->
+        
+        <!-- Ammo Styles -->
+        
+        <Style x:Key="ClipAmmoLeftStyle" BasedOn="{StaticResource TextBlockStyle}" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="10"/>
+        </Style>
+
+        <Style x:Key="TotalAmmoLeftStyle" BasedOn="{StaticResource ClipAmmoLeftStyle}" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="7"/>
+        </Style>
+
+        <!-- End Ammo Styles -->
     </SwapChainBackgroundPanel.Resources>
 
     <Canvas Name="CurrentScreen" x:FieldModifier="public">
@@ -65,7 +77,11 @@
                 <Rectangle Name="InnerHealthBar" Style="{StaticResource InnerHealthBarStyle}" x:FieldModifier="public" />
             </Border>
 
-            <TextBlock Name="Ammo" Style="{StaticResource TextBlockStyle}" FontSize="14" Text="Ammo Left:" Grid.Row="1" x:FieldModifier="public" />
+            <StackPanel Orientation="Vertical" Grid.Row="1">
+                <TextBlock Name="TotalAmmoLeft" Style="{StaticResource TotalAmmoLeftStyle}" x:FieldModifier="public" />
+                <Image Name="GunImage" Source="Content/Graphics/TestGun.png" HorizontalAlignment="Left" x:FieldModifier="public" />
+                <TextBlock Name="ClipAmmoLeft" Style="{StaticResource ClipAmmoLeftStyle}" x:FieldModifier="public" />
+            </StackPanel>
         </Grid>
     </Canvas>
 </SwapChainBackgroundPanel>
