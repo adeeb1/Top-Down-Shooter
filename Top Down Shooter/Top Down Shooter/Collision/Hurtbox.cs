@@ -59,7 +59,8 @@ namespace Top_Down_Shooter
         //Sets invincibility for the hurtbox
         public void SetInvincibility(float duration)
         {
-            InvDuration = (Main.activeTime + duration);
+            if (duration == InfInvincibility) InvDuration = InfInvincibility;
+            else InvDuration = (Main.activeTime + duration);
         }
 
         //Update the location of the hurtbox to be on its owner

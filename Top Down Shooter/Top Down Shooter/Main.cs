@@ -200,6 +200,9 @@ namespace Top_Down_Shooter
             Level.AddObject(new WalkingEnemy(LoadAssets.CharTest, new Vector2(1000, 80)));
             Level.AddObject(new DamagePowerup(new Vector2(200, 100), 100, 5000f));
 
+            Level.Player.PickupGun(new MachineGun(Level.Player.ObjectPos, Level.Player.ObjectDir, 100, 100, 200));
+            Level.Player.PickupGun(new MachineGun(Level.Player.ObjectPos, Level.Player.ObjectDir, 200, 200, 500));
+
             // Add a HUD for the player
             Level.Player.PlayerHUD = new HUD(this, Level.Player);
         }

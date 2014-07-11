@@ -68,8 +68,8 @@ namespace Top_Down_Shooter
             UpdateHealthBar();
 
             // Update the player's remaining ammo
-            GamePage.ClipAmmoLeft.Text = PlayerChar.PlayerGun.AmmoLeft.ToString();
-            GamePage.TotalAmmoLeft.Text = PlayerChar.PlayerGun.MaxAmmo.ToString();
+            GamePage.ClipAmmoLeft.Text = PlayerChar.PlayerGun.ClipAmmo.ToString();
+            GamePage.TotalAmmoLeft.Text = PlayerChar.PlayerGun.TotalAmmo.ToString();
         }
 
         // Gets the scaled Width of a XAML UI element

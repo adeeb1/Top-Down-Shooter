@@ -15,11 +15,14 @@ namespace Top_Down_Shooter
 
             Health = 100;
 
-            PlayerGun = new MachineGun(ObjectPos, ObjectDir, 100, 100, 200);
+            //PickupGun(new MachineGun(ObjectPos, ObjectDir, 100, 100, 200));
+            //PickupGun(new MachineGun(ObjectPos, ObjectDir, 200, 200, 500));
 
+            //BackupGun = (weak gun with infinite ammo here);
+            
             hurtbox = new Hurtbox(this, Helper.CreateRect(ObjectPos, ObjectTexture.Width, ObjectTexture.Height), 0);
 
-            PlayerGun.GunOwner = this;
+            //PlayerGun.GunOwner = this;
         }
 
 
