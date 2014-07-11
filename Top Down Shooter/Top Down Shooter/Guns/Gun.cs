@@ -66,10 +66,16 @@ namespace Top_Down_Shooter
             ReloadTime = reloadTime;
         }
 
-        protected override float SetDrawDepth()
+        //Checks if a gun has any ammo left at all
+        public bool HasAmmo
         {
-            return ((ObjectPos.Y + GunOwner.Level.LevelCam.CameraOffset.Y) / 1000f);
+            get { return (ClipAmmo > 0 || TotalAmmo > 0); }
         }
+
+        //protected override float SetDrawDepth()
+        //{
+        //    return ((ObjectPos.Y + GunOwner.Level.LevelCam.CameraOffset.Y) / 1000f);
+        //}
 
         //Reloads the gun
         public void Reload()
@@ -134,7 +140,10 @@ namespace Top_Down_Shooter
             // TODO: Add in rotation so that when facing up or down, the gun is rotated 90 degrees
             // TODO: Add in rotation so that when facing up or down, the gun is rotated 90 degrees
 
-            spriteBatch.Draw(ObjectTexture, ObjectPos - GunOwner.Level.LevelCam.CameraLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+            //The gun is not held by anything, so draw it on the floor
+            if (GunOwner == null)
+                spriteBatch.Draw(ObjectTexture, ObjectPos - Level.LevelCam.CameraLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
+            else spriteBatch.Draw(ObjectTexture, ObjectPos - GunOwner.Level.LevelCam.CameraLocation, null, Color.White, 0f, ObjectOrigin, 1f, SpriteEffects.None, SetDrawDepth());
 
             //for (int i = 0; i < GunProjectiles.Count; i++)
             //{

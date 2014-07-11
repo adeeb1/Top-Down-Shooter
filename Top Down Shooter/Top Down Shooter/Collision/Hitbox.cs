@@ -74,7 +74,7 @@ namespace Top_Down_Shooter
         //Checks if a hitbox touches a hurtbox
         public bool CanHitObject(Hurtbox objecthurtbox)
         {
-            return (CanHit == true && Bounds.Intersects(objecthurtbox.Bounds));
+            return (CanHit == true && objecthurtbox.CanTakeDamage() == true && Bounds.Intersects(objecthurtbox.Bounds));
         }
 
         //Update the location of the hurtbox to be on its owner
