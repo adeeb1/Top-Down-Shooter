@@ -120,6 +120,14 @@ namespace Top_Down_Shooter
             else CurrentAnim.Stop();
         }
 
+        protected void ReloadGun()
+        {
+            if (Input.IsKeyDown(keyboardState, Keys.R) == true)
+            {
+                PlayerGun.Reload();
+            }
+        }
+
         public void ShootGun()
         {
             // Check if the user is pressing the shoot key
@@ -158,7 +166,8 @@ namespace Top_Down_Shooter
             UpdateCollisionBoxes();
 
             if (PlayerGun != null)
-            { 
+            {
+                ReloadGun();
                 ShootGun();
                 PlayerGun.Update();
             }
