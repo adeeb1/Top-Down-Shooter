@@ -19,14 +19,17 @@ namespace Top_Down_Shooter
 
             TextBlock StartGame = CreateLabel("Start Game", new Vector2(50, 50));
             TextBlock Options = CreateLabel("Options", new Vector2(50, 100));
-            TextBlock Quit = CreateLabel("Quit", new Vector2(50, 150));
+            TextBlock LevelEditor = CreateLabel("Level Editor", new Vector2(50, 150));
+            TextBlock Quit = CreateLabel("Quit", new Vector2(50, 200));
 
             AllControls.Add(StartGame);
             AllControls.Add(Options);
+            AllControls.Add(LevelEditor);
             AllControls.Add(Quit);
 
             AddMenuOption(StartGame);
             AddMenuOption(Options);
+            AddMenuOption(LevelEditor);
             AddMenuOption(Quit);
             
             SetCursorPosition();
@@ -43,7 +46,10 @@ namespace Top_Down_Shooter
                 case 1: // Options
                     Game.AddScreen(new OptionsScreen(GamePage, Game));
                     break;
-                case 2: // Quit
+                case 2: // Level Editor
+                    Game.StartLevelEditor();
+                    break;
+                case 3: // Quit
                     Game.Exit();
                     Application.Current.Exit();
                     break;

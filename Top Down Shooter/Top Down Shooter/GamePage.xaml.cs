@@ -36,6 +36,11 @@ namespace Top_Down_Shooter
             _game.AddScreen(screen);
         }
 
+        private void btnTileEngine_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.TileDraw = (bool)btnTileEngine.IsChecked;
+        }
+
 
     }
 }

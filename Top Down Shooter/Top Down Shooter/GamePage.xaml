@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="SwapChainBackgroundPanel_Loaded">
 
-    <SwapChainBackgroundPanel.Resources>
+    <SwapChainBackgroundPanel.Resources> 
         <!-- HUD Background Styles -->
         
         <Style x:Key="HUDBackgroundStyle" TargetType="Grid">
@@ -55,6 +55,17 @@
         </Style>
 
         <!-- End Ammo Styles -->
+        
+        
+        <!-- **** Level Editor Styles **** -->
+        
+        <!-- Level Name Style -->
+        <Style x:Key="LevelNameStyle" BasedOn="{StaticResource TextBoxStyle}" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
     </SwapChainBackgroundPanel.Resources>
 
     <Canvas Name="CurrentScreen" x:FieldModifier="public">
@@ -84,4 +95,40 @@
             </StackPanel>
         </Grid>
     </Canvas>
+
+    <Grid Name="LevelEditor" x:FieldModifier="public" Visibility="Collapsed">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height=".3*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Name="btnBack" Style="{StaticResource NavigationBackButtonNormalStyle}" Foreground="Black" BorderBrush="Black" />
+            <TextBox Name="txtLevelName" Style="{StaticResource LevelNameStyle}" PlaceholderText="Level Name" Grid.Column="1" />
+        </Grid>
+        
+        <Grid Name="grdLevelEditorItems" Background="White" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Tile Engine -->
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <ToggleButton Background="Blue" Name="btnTileEngine" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Tiles"
+                              Click="btnTileEngine_Click" />
+            </StackPanel>
+            
+            <!-- Characters -->
+        </Grid>
+    </Grid>
 </SwapChainBackgroundPanel>

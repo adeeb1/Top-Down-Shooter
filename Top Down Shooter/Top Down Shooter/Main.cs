@@ -9,7 +9,7 @@ using Windows.UI.Xaml;
 namespace Top_Down_Shooter
 {
     // Global enum to represent the game state
-    public enum GameState : byte { Screen, InGame, Paused }
+    public enum GameState : byte { Screen, InGame, Paused, LevelEditor }
 
     public class Main : Game
     {
@@ -122,10 +122,28 @@ namespace Top_Down_Shooter
             }
         }
 
-        private void ChangeCurrentScreenCanvas(Visibility visibility)
+        private void ShowScreenCanvas()
         {
-            GamePage.CurrentScreen.Visibility = visibility;
-            GamePage.HUD.Visibility = (Visibility)((int)visibility ^ 1);
+            GamePage.CurrentScreen.Visibility = Visibility.Visible;
+
+            GamePage.HUD.Visibility = Visibility.Collapsed;
+            GamePage.LevelEditor.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowGameCanvas()
+        {
+            GamePage.HUD.Visibility = Visibility.Visible;
+
+            GamePage.CurrentScreen.Visibility = Visibility.Collapsed;
+            GamePage.LevelEditor.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowLevelEditorGrid()
+        {
+            GamePage.LevelEditor.Visibility = Visibility.Visible;
+
+            GamePage.CurrentScreen.Visibility = Visibility.Collapsed;
+            GamePage.HUD.Visibility = Visibility.Collapsed;
         }
 
         private void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs e)
@@ -172,13 +190,21 @@ namespace Top_Down_Shooter
             // Set the game state to the specified state
             GameState = state;
 
-            if (GameState == GameState.InGame)
+            // Switch the main canvas depending on the new game state
+            switch (GameState)
             {
-                ChangeCurrentScreenCanvas(Visibility.Collapsed);
-            }
-            else
-            {
-                ChangeCurrentScreenCanvas(Visibility.Visible);
+                case GameState.Screen:
+                    ShowScreenCanvas();
+
+                    break;
+                case GameState.InGame:
+                    ShowGameCanvas();
+
+                    break;
+                case GameState.LevelEditor:
+                    ShowLevelEditorGrid();
+
+                    break;
             }
         }
 
@@ -205,6 +231,24 @@ namespace Top_Down_Shooter
 
             // Add a HUD for the player
             Level.Player.PlayerHUD = new HUD(this, Level.Player);
+        }
+
+        public void StartLevelEditor()
+        {
+            // Remove the Title Screen
+            RemoveScreen();
+
+            // Set the game mode to the level editor
+            ChangeGameState(GameState.LevelEditor);
+
+            // TODO: Probably will need to inherit BaseLevel and create a new LevelEditorLevel class
+            //       This class should overload the camera so that it is not dependent on the player
+            // TODO: Probably will need to inherit BaseLevel and create a new LevelEditorLevel class
+            //       This class should overload the camera so that it is not dependent on the player
+
+            // Create a new level for the editor
+            Level = new BaseLevel();
+            Level.AddPlayer(new Character1());
         }
 
         protected override void Update(GameTime gameTime)
@@ -234,6 +278,9 @@ namespace Top_Down_Shooter
                     break;
                 case GameState.Paused: // Don't update any in-game objects
                     //TEMPORARY
+                    Level.Update(this);
+                    break;
+                case GameState.LevelEditor: // Update the level objects
                     Level.Update(this);
                     break;
             }
@@ -278,6 +325,9 @@ namespace Top_Down_Shooter
                     //    player.PlayerGun.GunProjectiles[i].Draw(spriteBatch);
                     //}
 
+                    break;
+                case GameState.LevelEditor: // Draw the level editor objects
+                    Level.Draw(spriteBatch);
                     break;
             }
 
